@@ -123,7 +123,6 @@ let gameState = {
                 gameState.blueprint.toggleOff(gameState.blueprintSprite);
                 gameState.blueprintOverlapCheck.destroy();
                 gameState.blueprintOverlapCheck1.destroy();
-                gameState.blueprintOverlapCheck2.destroy();
             }
             if(gameState.keys.ESC.isDown){
                 gameState.selected.select = null;
