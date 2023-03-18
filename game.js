@@ -46,55 +46,6 @@ let gameState = {
         }
     },
     
-    chracterControls : function(scene){
-        if(gameState.characterStats.health > 0){
-            gameState.healthText.setText(`${gameState.characterStats.health}`);
-            gameState.character.depth = gameState.character.y+16;
-            gameState.character.body.checkWorldBounds();
-            if(gameState.character.body.velocity.x == 0){
-                gameState.character.anims.play('characterIdle',true);
-            }
-            if(gameState.keys.W.isDown){
-                gameState.character.anims.play('characterWalk',true);
-                gameState.character.setVelocityY(-gameState.characterStats.speed);
-            }
-            else if(gameState.keys.S.isDown){
-                gameState.character.anims.play('characterWalk',true);
-                gameState.character.setVelocityY(gameState.characterStats.speed);
-            }
-            else {
-                gameState.character.setVelocityY(0);
-            }
-            if(gameState.keys.A.isDown){
-                gameState.character.flipX = true;
-                gameState.character.anims.play('characterWalk',true);
-                gameState.character.setVelocityX(-gameState.characterStats.speed);
-            }
-            else if(gameState.keys.D.isDown){
-                gameState.character.flipX = false;
-                gameState.character.anims.play('characterWalk',true);
-                gameState.character.setVelocityX(gameState.characterStats.speed);
-            }
-            else {
-                gameState.character.setVelocityX(0);
-            }
-            
-        }
-        else {
-            gameState.character.destroy();
-            scene.physics.pause();
-            scene.time.addEvent({
-                delay: 3000,
-                callback: ()=>{
-                    location.reload();
-                    /*scene.scene.stop('ArenaScene');
-                    scene.scene.start('MenuScene');*/
-                },  
-                startAt: 0,
-                timeScale: 1
-            });
-        }
-    },
     
     updateMoney:function(){
         gameState.moneyText.setText(`${gameState.money}`);
@@ -103,13 +54,6 @@ let gameState = {
     createIcons: function (scene){
         scene.add.image(window.innerWidth-200,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
         gameState.moneyText = scene.add.text( window.innerWidth - 160, 5, `${gameState.money}`, {
-            fill: '#OOOOOO', 
-            fontSize: '30px',
-            fontFamily: 'Qahiri',
-            strokeThickness: 10,
-        }).setDepth(window.innerHeight+3);
-        scene.add.image(window.innerWidth-320,10,'healthSign').setOrigin(0,0).setDepth(window.innerHeight+3);
-        gameState.healthText = scene.add.text( window.innerWidth - 285, 5, `${gameState.characterStats.health}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
             fontFamily: 'Qahiri',
@@ -165,9 +109,6 @@ let gameState = {
                 gameState.blueprint.overLap = 0;
             });
             gameState.blueprintOverlapCheck1 = scene.physics.add.overlap(gameState.blueprintSprite, gameState.zombies,()=>{
-                gameState.blueprint.overLap = 0;
-            });
-            gameState.blueprintOverlapCheck2 = scene.physics.add.overlap(gameState.blueprintSprite, gameState.character,()=>{
                 gameState.blueprint.overLap = 0;
             });
         },
@@ -561,17 +502,12 @@ let gameState = {
             }
         },
         attack: function (scene, target){
-            if(target == gameState.character){
-                gameState.characterStats.health -= gameState.zombie1Stats.damage;
-            }
-            else {
-                target.health -= gameState.zombie1Stats.damage;
-            }
+            target.health -= gameState.zombie1Stats.damage;
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -580,9 +516,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                //target = gameState.character;
             }
             return target;
         },
@@ -668,17 +601,12 @@ let gameState = {
             }
         },
         attack: function (scene, target){
-            if(target == gameState.character){
-                gameState.characterStats.health -= gameState.zombieGiantStats.damage;
-            }
-            else {
-                target.health -= gameState.zombieGiantStats.damage;
-            }
+            target.health -= gameState.zombieGiantStats.damage;
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -687,9 +615,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                target = gameState.character;
             }
             return target;
         },
@@ -782,16 +707,13 @@ let gameState = {
                     gameState.buildings.getChildren()[i].health -= gameState.zombieBomberStats.damage;
                 }
             }
-            var dist = Phaser.Math.Distance.BetweenPoints(gameState.character, zombie);
-            if(dist<50){
-                gameState.characterStats.health -= gameState.zombieBomberStats.damage;
-            }
+            
             zombie.health = 0;
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -801,9 +723,7 @@ let gameState = {
                     }
                 }
             }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                //target = gameState.character;
-            }
+            
             return target;
         },
         behaviourLoop: function (scene,zombie){
@@ -883,17 +803,12 @@ let gameState = {
             }
         },
         attack: function (scene, target){
-            if(target == gameState.character){
-                gameState.characterStats.health -= gameState.zombieKingStats.damage;
-            }
-            else {
-                target.health -= gameState.zombieKingStats.damage;
-            }
+            target.health -= gameState.zombieKingStats.damage;
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -902,9 +817,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                target = gameState.character;
             }
             return target;
         },
@@ -1009,16 +921,11 @@ let gameState = {
                 bull.destroy();
                 targ.health -= gameState.zombieWizardStats.damage;
             });
-            scene.physics.add.overlap(bullet, gameState.character,(bull, targ)=>{
-                bulletLoop.destroy();
-                bull.destroy();
-                gameState.characterStats.health -= gameState.zombieWizardStats.damage;
-            });
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -1027,9 +934,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                target = gameState.character;
             }
             return target;
         },
@@ -1153,16 +1057,11 @@ let gameState = {
                 bull.destroy();
                 targ.health -= gameState.zombieMuskateerStats.damage;
             });
-            scene.physics.add.overlap(bullet, gameState.character,(bull, targ)=>{
-                bulletLoop.destroy();
-                bull.destroy();
-                gameState.characterStats.health -= gameState.zombieMuskateerStats.damage;
-            });
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -1171,9 +1070,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                //target = gameState.character;
             }
             return target;
         },
@@ -1260,17 +1156,12 @@ let gameState = {
             }
         },
         attack: function (scene, target){
-            if(target == gameState.character){
-                gameState.characterStats.health -= gameState.zombieDogStats.damage;
-            }
-            else {
-                target.health -= gameState.zombieDogStats.damage;
-            }
+            target.health -= gameState.zombieDogStats.damage;
         },
         findTarget: function(scene,zombie){
             var dist;
             var closest = 10000;
-            var target = gameState.character;
+            var target;
             if( gameState.buildings.getChildren().length >0){
                 for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                     dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
@@ -1279,9 +1170,6 @@ let gameState = {
                         target = gameState.buildings.getChildren()[i];
                     }
                 }
-            }
-            if(Phaser.Math.Distance.BetweenPoints(gameState.character, zombie) < closest){
-                target = gameState.character;
             }
             return target;
         },
