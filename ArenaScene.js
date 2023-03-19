@@ -47,6 +47,7 @@ class ArenaScene extends Phaser.Scene {
         gameState.spawnCount = 5;
         gameState.commenceWaves(this);
         gameState.createIcons(this);
+        gameState.townhallStats.spawnTower(this,gameState.townhallStats,600,333);
         this.scene.launch('BuildScene');
         //this.physics.add.overlap(gameState.blueprint, gameState.buildings)
         

@@ -35,7 +35,7 @@ class BuildScene extends Phaser.Scene {
         
     }
     create() {
-        
+        gameState.buildScene = this;
         function createTowerIcon(scene,i){
             var tower = scene.physics.add.sprite(10+i*60,565,`${gameState.gameTowers[i].sprite}`).setOrigin(0,0).setInteractive();
             tower.setScale(50/tower.height);

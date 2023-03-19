@@ -36,13 +36,13 @@ let gameState = {
     createBackground : function (scene){
         var num = Math.ceil(Math.random ()*3);
         if(num == 1){
-            scene.add.image(0,0, 'grassFieldBackground').setOrigin(0,0).setScale((window.innerHeight-10)/675);
+            scene.add.image(0,0, 'grassFieldBackground').setOrigin(0,0).setScale(1);
         }
         else if(num == 2){
-            scene.add.image(0,0, 'caveBackground').setOrigin(0,0).setScale((window.innerHeight-10)/675);
+            scene.add.image(0,0, 'caveBackground').setOrigin(0,0).setScale(1);
         }
         else if(num == 3){
-            scene.add.image(0,0, 'canyonBackground').setOrigin(0,0).setScale((window.innerHeight-10)/675);
+            scene.add.image(0,0, 'canyonBackground').setOrigin(0,0).setScale(1);
         }
     },
     
@@ -83,41 +83,72 @@ let gameState = {
             gameState.blueprint.active = false;
             gameState.blueprintSprite.destroy();
             gameState.blueprint.button.destroy();
+            gameState.blueprint.check.destroy();
         },
         create: function(scene,towerStats){
+            gameState.selected.select = null;
             gameState.blueprint.active = true;
-            gameState.blueprintSprite = scene.physics.add.sprite(scene.input.x,scene.input.y,`${towerStats.sprite}`).setInteractive().setDepth(10000);
+            gameState.blueprintSprite = scene.physics.add.sprite(600,335,`${towerStats.sprite}`).setInteractive().setDepth(10000);
+            scene.input.setDraggable(gameState.blueprintSprite);
+            scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+                gameObject.x = dragX;
+                gameObject.y = dragY;
+            });
             gameState.blueprintSprite.body.offset.x = towerStats.levels.lvl1.offsetx;
             gameState.blueprintSprite.body.offset.y = towerStats.levels.lvl1.offsety;
             gameState.blueprintSprite.body.width = towerStats.levels.lvl1.width;
             gameState.blueprintSprite.body.height = towerStats.levels.lvl1.height;
             gameState.blueprint.building = towerStats;
             gameState.blueprint.button = gameState.blueprintSprite.on('pointerdown', function(pointer){
+                
+            });
+            var confirmButton = gameState.buildScene.add.image(1000,615,`confirmButton`).setInteractive().setDepth(100);
+            confirmButton.on('pointerdown', function(pointer){
                 if(gameState.money >= towerStats.levels.lvl1.cost && gameState.blueprint.overLap >5){
                     gameState.money -= towerStats.levels.lvl1.cost;
                     towerStats.spawnTower                                                               (gameState.globalScene,towerStats);
                     gameState.updateMoney();
-                }
-                else if(gameState.blueprintSprite.x <= 100 && gameState.blueprintSprite.x >= window.innerWidth-100){
-                    gameState.createTempText(scene,10,window.innerHeight/2,"!!!CANT BUILD INSIDE THE SPAWN ZONE!!!",2500,18);
-                }
-                else if(gameState.money < towerStats.cost){
-                    gameState.createTempText(scene,10,10,`Building Costs : $${gameState.blueprint.building.cost}`,3000,25);
+                    confirmButton.destroy();
+                    cancelButton.destroy();
+                    gameState.blueprint.toggleOff(gameState.blueprintSprite);
+                    gameState.blueprintOverlapCheck.destroy();
+                    gameState.blueprintOverlapCheck1.destroy();
                 }
             });
+            var cancelButton = gameState.buildScene.add.image(1100,615,`cancelButton`).setInteractive().setDepth(100);
+            cancelButton.on('pointerdown', function(pointer){
+                confirmButton.destroy();
+                cancelButton.destroy();
+                gameState.blueprint.toggleOff(gameState.blueprintSprite);
+                gameState.blueprintOverlapCheck.destroy();
+                gameState.blueprintOverlapCheck1.destroy();
+            });
+                             
             gameState.blueprintOverlapCheck = scene.physics.add.overlap(gameState.blueprintSprite, gameState.buildings,()=>{
                 gameState.blueprint.overLap = 0;
             });
             gameState.blueprintOverlapCheck1 = scene.physics.add.overlap(gameState.blueprintSprite, gameState.zombies,()=>{
                 gameState.blueprint.overLap = 0;
             });
+            gameState.blueprint.check = scene.time.addEvent({
+                delay: 1,
+                callback: ()=>{
+                    if(gameState.blueprint.overLap < 5){
+                        gameState.blueprintSprite.setTint(0xFF0000, 0xFF0000, 0xFF0000, 0xFF0000);
+                    }else{
+                        gameState.blueprintSprite.setTint(0xFFFFFF , 0xFFFFFF , 0xFFFFFF , 0xFFFFFF );
+                    }       
+                },  
+                startAt: 0,
+                timeScale: 1,
+                repeat: -1
+            }); 
         },
         checkControls: function (scene){
             if(gameState.blueprint.active == true){
                 gameState.blueprint.overLap += 1;
-                gameState.blueprintSprite.x = scene.input.x;
-                gameState.blueprintSprite.y = scene.input.y;
-                
+                /*gameState.blueprintSprite.x = scene.input.x;
+                gameState.blueprintSprite.y = scene.input.y;*/
             }
             if(gameState.keys.ESC.isDown && gameState.blueprint.active == true){
                 gameState.blueprint.toggleOff(gameState.blueprintSprite);
@@ -174,15 +205,19 @@ let gameState = {
                 strokeThickness: 2,
                 wordWrap: { width: 300 }
             }).setDepth(2).setOrigin(0,0.5);
-            var upgradeButton = scene.add.sprite(1100,615,'upgradeTowerIcon').setInteractive();
+            var upgradeButton = scene.add.sprite(1070,615,'upgradeTowerIcon').setInteractive();
             upgradeButton.on('pointerdown', function(pointer){
                 gameState.selected.select.towerStats.upgradeTower(scene,gameState.selected.select);
+            });
+            var cancelButton = gameState.buildScene.add.image(1150,615,`cancelButton`).setInteractive().setDepth(100);
+            cancelButton.on('pointerdown', function(pointer){
+                gameState.selected.select = null;
             });
             scene.time.addEvent({
                 delay: 1,
                 callback: ()=>{
                     if(gameState.selected.select !== null && gameState.selected.select.health > 0){
-                        text.setText(`${gameState.selected.select.currentLevel.name}         ${gameState.selected.select.health}/${gameState.selected.select.currentLevel.health}`);
+                        text.setText(`${gameState.selected.select.currentLevel.name}         ${Math.floor(gameState.selected.select.health)}/${gameState.selected.select.currentLevel.health}`);
                         icon.setTexture(`${gameState.selected.select.towerStats.sprite}`);
                         if(gameState.selected.select.currentLevel.width > gameState.selected.select.currentLevel.height){
                             icon.scale = 50/gameState.selected.select.currentLevel.width;
@@ -190,9 +225,13 @@ let gameState = {
                             icon.scale = 50/gameState.selected.select.currentLevel.height;  
                         }
                         icon.setFrame(1);
+                        upgradeButton.visible = true;
+                        cancelButton.visible = true;
                     }else{
                         text.setText('');
-                        icon.setTexture('');
+                        icon.setTexture('BLANK');
+                        upgradeButton.visible = false;
+                        cancelButton.visible = false;
                     }
                 },  
                 startAt: 0,
@@ -284,7 +323,7 @@ let gameState = {
                             }); 
                         }else if(gameState.wave == 6){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -294,7 +333,7 @@ let gameState = {
                             }); 
                         }else if(gameState.wave == 7){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -303,7 +342,7 @@ let gameState = {
                                 repeat: 9
                             }); 
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -313,7 +352,7 @@ let gameState = {
                             }); 
                         }else if(gameState.wave == 8){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -322,7 +361,7 @@ let gameState = {
                                 repeat: 9
                             }); 
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -333,7 +372,7 @@ let gameState = {
                         }
                         else if(gameState.wave == 9){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -342,7 +381,7 @@ let gameState = {
                                 repeat: 4
                             }); 
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -353,7 +392,7 @@ let gameState = {
                         }
                         else if(gameState.wave == 10){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -363,7 +402,7 @@ let gameState = {
                             }); 
                         }else if(gameState.wave == 11){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -373,7 +412,7 @@ let gameState = {
                             }); 
                         }else if(gameState.wave == 12){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
@@ -382,7 +421,7 @@ let gameState = {
                                 repeat: 24
                             }); 
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -392,7 +431,7 @@ let gameState = {
                             });
                         }else if(gameState.wave == 13){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
                                 },  
@@ -401,7 +440,7 @@ let gameState = {
                                 repeat: 9
                             }); 
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
                                 },  
@@ -447,15 +486,82 @@ let gameState = {
                                 timeScale: 1,
                                 repeat: 9
                             });
-                        }else if(gameState.wave > 15){
+                        }else if(gameState.wave == 16){
                             scene.time.addEvent({
-                                delay: 2000,
+                                delay: 1000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 19
+                            }); 
+                            scene.time.addEvent({
+                                delay: 1000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 19
+                            });
+                        }else if(gameState.wave == 17){
+                            scene.time.addEvent({
+                                delay: 50,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 19
+                            }); 
+                            scene.time.addEvent({
+                                delay: 1000,
                                 callback: ()=>{
                                     gameState.spawnZombies(scene,gameState.zombie1Stats,1);
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: gameState.wave
+                                repeat: 19
+                            });
+                        }else if(gameState.wave == 18){
+                            scene.time.addEvent({
+                                delay: 30,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 39
+                            });
+                        }else if(gameState.wave == 19){
+                            scene.time.addEvent({
+                                delay: 10,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 49
+                            }); 
+                            scene.time.addEvent({
+                                delay: 50,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieBomberStats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 4
+                            });
+                        }else if(gameState.wave > 19){
+                            scene.time.addEvent({
+                                delay: 10,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                },  
+                                startAt: 0,
+                                timeScale: 1,
+                                repeat: 70
                             }); 
                         }
                     },  
@@ -580,6 +686,8 @@ let gameState = {
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieGiant`).setDepth(1);
             zombie.anims.play(`zombieGiantSpawn`);
+            zombie.health = gameState.zombie1Stats.health;
+            gameState.createHealthBar(scene,zombie,gameState.zombie1Stats.health);
             scene.time.addEvent({
                 delay: 1310,
                 callback: ()=>{
@@ -618,7 +726,6 @@ let gameState = {
             return target;
         },
         behaviourLoop: function (scene,zombie){
-            zombie.health = gameState.zombieGiantStats.health;
             var target = gameState.zombieGiantStats.findTarget(scene,zombie);
             var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
             var loop = scene.time.addEvent({
@@ -675,7 +782,7 @@ let gameState = {
         speed: 100,
         health: 75,
         damage: 100,
-        attackRange: 100,
+        attackRange: 30,
         attackSpeed: 1,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieBomber`).setDepth(1);
@@ -1500,41 +1607,44 @@ let gameState = {
             levels:{
                 lvl1:{
                     lvl: 1,
-                    cost: 100,
+                    cost: 200,
                     damage: 0,
-                    health: 30,
+                    health: 300,
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
                     offsety: 0,
                     width: 50,
                     height: 50,
+                    production: 5,
                     name: 'Factory I'
                 },
                 lvl2:{
                     lvl: 2,
-                    cost: 500,
+                    cost: 1000,
                     damage: 0,
-                    health: 400,
+                    health: 325,
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
                     offsety: 0,
                     width: 50,
                     height: 50,
+                    production: 15,
                     name: 'Factory II'
                 },
                 lvl3:{
                     lvl: 3,
-                    cost: 1000,
+                    cost: 5000,
                     damage: 0,
-                    health: 500,
+                    health: 350,
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
                     offsety: 0,
                     width: 50,
                     height: 50,
+                    production: 50,
                     name: 'Factory III'
                 }
             },
@@ -1581,14 +1691,7 @@ let gameState = {
                     delay: 5000,
                     callback: ()=>{
                         if(building.health >0){
-                            if(building.currentLevel.lvl == 1){
-                                gameState.money += 10;
-                            }else if(building.currentLevel.lvl == 2){
-                                gameState.money += 20;
-                            }else if(building.currentLevel.lvl == 3){
-                                gameState.money += 30;
-                            }
-                            
+                            gameState.money += building.currentLevel.production;
                             gameState.updateMoney();
                         }
                     },  
@@ -1723,19 +1826,15 @@ let gameState = {
                         var bullet = gameState.bullets.create(building.x,building.y,'laser1');
                         gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
                         bullet.setRotation(gameState.angle); 
-                        scene.physics.moveTo(bullet,target.x, target.y,600);
+                        scene.physics.moveToObject(bullet,target,null,400);
                         var bulletLoop = scene.time.addEvent({
-                            delay: 8000,
+                            delay: 400,
                             callback: ()=>{
                                 bullet.destroy();
+                                target.health += building.currentLevel.damage;
                             },  
                             startAt: 0,
                             timeScale: 1
-                        });
-                        scene.physics.add.overlap(bullet, target,(bull, targ)=>{
-                            bulletLoop.destroy();
-                            bull.destroy();
-                            targ.health += building.currentLevel.damage;
                         });
                     },  
                     startAt: 0,
@@ -1778,7 +1877,237 @@ let gameState = {
                 });  
             }
         },
+        //FlameThrowerTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 100,
+                    damage: 0.2,
+                    health: 80,
+                    attackRange: 100,
+                    attackSpeed: 100,
+                    offsetx: 0,
+                    offsety: 50,
+                    width: 80,
+                    height: 30,
+                    name: 'FlameThrowerTower I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 150,
+                    damage: 0.27,
+                    health: 120,
+                    attackRange: 100,
+                    attackSpeed: 100,
+                    offsetx: 0,
+                    offsety: 50,
+                    width: 80,
+                    height: 30,
+                    name: 'FlameThrowerTower II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 300,
+                    damage: 0.35,
+                    health: 160,
+                    attackRange: 100,
+                    attackSpeed: 100,
+                    offsetx: 0,
+                    offsety: 50,
+                    width: 80,
+                    height: 30,
+                    name: 'FlameThrowerTower III'
+                }
+            },
+            sprite: 'flameThrowerTower',
+            attackType: 'normal',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'flameThrowerTower').setDepth(scene.input.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                gameState.gameTowers[4].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        var bullet = gameState.bullets.create(building.x,building.y,'flame1');
+                        gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
+                        bullet.setRotation(gameState.angle); 
+                        scene.physics.moveTo(bullet,target.x,target.y,100);
+                        var bulletGrow = scene.time.addEvent({
+                            delay: 10,
+                            callback: ()=>{
+                                bullet.scale += 0.05;
+                            },  
+                            startAt: 0,
+                            timeScale: 1,
+                            repeat: -1,
+                        });
+                        var bulletLoop = scene.time.addEvent({
+                            delay: 1000,
+                            callback: ()=>{
+                                bullet.destroy();
+                                bulletGrow.destroy();
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        });
+                        scene.physics.add.overlap(bullet, gameState.zombies,(bull, targ)=>{
+                            targ.health -= building.currentLevel.damage;
+                        });
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.anims.play(`flameThrowerTower${building.currentLevel.lvl}Action`,true);
+                                    building.attackLoop.paused = false;
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`flameThrowerTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
+            }
+        },
     ],
+    
+    
+    //townHallStats
+    townhallStats:{
+        levels:{
+            lvl1:{
+                lvl: 1,
+                cost: 0,
+                damage: 0,
+                health: 1000,
+                attackRange: 0,
+                attackSpeed: 0,
+                offsetx: 0,
+                offsety: 50,
+                width: 100,
+                height: 50,
+                name: 'TownHall'
+            }
+        },
+        sprite: 'townHall',
+        attackType: 'none',
+        buildingType: 'main',
+        spawnTower: function(scene,towerStats,spawnx,spawny){
+            var tower = gameState.buildings.create(spawnx,spawny,'townHall').setDepth(scene.input.y).setImmovable().setInteractive();
+            gameState.townHall = tower;
+            tower.body.offset.y = towerStats.levels.lvl1.offsety;
+            tower.body.height = towerStats.levels.lvl1.height;
+            tower.health = towerStats.levels.lvl1.health;
+            tower.currentLevel = towerStats.levels.lvl1;
+            tower.towerStats = towerStats;
+            tower.anims.play('townHallIdle',true);
+            gameState.createHealthBar(scene,tower,gameState.townhallStats.levels.lvl1.health);
+            tower.on('pointerdown', function(pointer){
+                if(gameState.blueprint.active == false){
+                    gameState.selected.setInfo(scene,tower);
+                }
+            });
+            towerStats.action(scene,tower);
+        },
+        upgradeTower: function(scene,tower){
+
+        },
+        action: function(scene,building){
+            var loop1 = scene.time.addEvent({
+                delay: 1,
+                callback: ()=>{
+                    if(building.health <=0){
+                        gameState.createExplosion(scene,building.x,building.y);
+                        loop1.destroy();
+                        scene.scene.pause('ArenaScene');
+                    }
+                },  
+                startAt: 0,
+                timeScale: 1,
+                repeat: -1
+            }); 
+        }
+    },
+    
     
     
     sniperTowerStats:{

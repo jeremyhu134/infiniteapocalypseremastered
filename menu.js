@@ -42,16 +42,23 @@ class MenuScene extends Phaser.Scene {
         this.load.image('waveSign','images/waveSign.png');
         this.load.image('buildSign','images/buildSign.png');
         this.load.image('buildMenuBg','images/buildMenuBg.png');
+        this.load.image('confirmButton','images/confirmButton.png');
+        this.load.image('cancelButton','images/cancelButton.png');
         this.load.image('startButton','images/startButton.png');
+        this.load.image('BLANK','images/BLANK.png');
         this.load.image('upgradeTowerIcon','images/upgradeTowerIcon.png');
         this.load.image('laser1','images/laser1.png');
+        this.load.image('flame1','images/flame1.png');
         
         
         this.load.spritesheet('machineGunTower','images/machineGunTower.png',{frameWidth: 80,frameHeight:80});
         this.load.spritesheet('repairTower','images/repairTower.png',{frameWidth: 50,frameHeight:50});
+        this.load.spritesheet('flameThrowerTower','images/flameThrowerTower.png',{frameWidth: 80,frameHeight:80});
+        
+        this.load.spritesheet('townHall','images/townHall.png',{frameWidth: 100,frameHeight:100});
     }
     create() {
-        
+        this.scale.lockOrientation('landscape')
         //character Animations
         this.anims.create({
             key: 'characterIdle',
@@ -377,6 +384,15 @@ class MenuScene extends Phaser.Scene {
         
         
         this.anims.create({
+            key: 'townHallIdle',
+            frameRate: 7,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('townHall',{start: 0,end: 7})
+        });
+        
+        
+        
+        this.anims.create({
             key: 'factory1Action',
             frameRate: 7,
             repeat: -1,
@@ -408,6 +424,45 @@ class MenuScene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1,
             frames:this.anims.generateFrameNames('repairTower',{start: 7,end: 10})
+        });
+        
+        
+        
+        this.anims.create({
+            key: 'flameThrowerTower1Idle',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 1,end: 1})
+        });
+        this.anims.create({
+            key: 'flameThrowerTower2Idle',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 3,end: 3})
+        });
+        this.anims.create({
+            key: 'flameThrowerTower3Idle',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 5,end: 5})
+        });
+        this.anims.create({
+            key: 'flameThrowerTower1Action',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 1,end: 2})
+        });
+        this.anims.create({
+            key: 'flameThrowerTower2Action',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 3,end: 4})
+        });
+        this.anims.create({
+            key: 'flameThrowerTower3Action',
+            frameRate: 20,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('flameThrowerTower',{start: 5,end: 6})
         });
         
         this.add.image(window.innerWidth/2,100,'title');
