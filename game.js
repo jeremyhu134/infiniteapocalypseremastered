@@ -1146,22 +1146,18 @@ let gameState = {
             }
         },
         attack: function (scene, target,zombie){
-            var bullet = gameState.bullets.create(zombie.x,zombie.y,'bullet');
+            var bullet = gameState.bullets.create(zombie.x,zombie.y,'bullet').setDepth(1000);
             gameState.angle=Phaser.Math.Angle.Between(zombie.x,zombie.y,target.x,target.y);
             bullet.setRotation(gameState.angle); 
-            scene.physics.moveTo(bullet,target.x+target.currentLevel.offsetx ,target.y+target.currentLevel.offsety- target.currentLevel.height,300);
+            scene.physics.moveToObject(bullet,target,null,500);
             var bulletLoop = scene.time.addEvent({
-                delay: 10000,
+                delay: 500,
                 callback: ()=>{
                     bullet.destroy();
+                    target.health -= gameState.zombieMuskateerStats.damage;
                 },  
                 startAt: 0,
                 timeScale: 1
-            });
-            scene.physics.add.overlap(bullet, gameState.buildings,(bull, targ)=>{
-                bulletLoop.destroy();
-                bull.destroy();
-                targ.health -= gameState.zombieMuskateerStats.damage;
             });
         },
         findTarget: function(scene,zombie){
@@ -1823,7 +1819,7 @@ let gameState = {
                 building.attackLoop = scene.time.addEvent({
                     delay: building.currentLevel.attackSpeed,
                     callback: ()=>{
-                        var bullet = gameState.bullets.create(building.x,building.y,'laser1');
+                        var bullet = gameState.bullets.create(building.x,building.y,'laser1').setDepth(target.y);
                         gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
                         bullet.setRotation(gameState.angle); 
                         scene.physics.moveToObject(bullet,target,null,400);
