@@ -1398,7 +1398,7 @@ let gameState = {
 
 
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'machineGunTower').setDepth(scene.input.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'machineGunTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.setFrame(1);
                 tower.health = towerStats.levels.lvl1.health;
                 tower.active = true;
@@ -1559,7 +1559,7 @@ let gameState = {
             attackType: 'none',
             buildingType: 'wall',
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'woodWall').setDepth(scene.input.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'woodWall').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.body.offset.y = towerStats.levels.lvl1.offsety;
                 tower.body.height = towerStats.levels.lvl1.height;
                 tower.health = towerStats.levels.lvl1.health;
@@ -1652,7 +1652,7 @@ let gameState = {
             attackType: 'none',
             buildingType: 'producer',
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'factory').setDepth(scene.input.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'factory').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.setFrame(1);
                 tower.health = towerStats.levels.lvl1.health;
                 tower.active = true;
@@ -1767,7 +1767,7 @@ let gameState = {
 
 
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'repairTower').setDepth(scene.input.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'repairTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.setFrame(1);
                 tower.health = towerStats.levels.lvl1.health;
                 tower.active = true;
@@ -1926,7 +1926,7 @@ let gameState = {
 
 
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'flameThrowerTower').setDepth(scene.input.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'flameThrowerTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.setFrame(1);
                 tower.health = towerStats.levels.lvl1.health;
                 tower.active = true;
@@ -2072,7 +2072,7 @@ let gameState = {
         attackType: 'none',
         buildingType: 'main',
         spawnTower: function(scene,towerStats,spawnx,spawny){
-            var tower = gameState.buildings.create(spawnx,spawny,'townHall').setDepth(scene.input.y).setImmovable().setInteractive();
+            var tower = gameState.buildings.create(spawnx,spawny,'townHall').setDepth(spawny).setImmovable().setInteractive();
             gameState.townHall = tower;
             tower.body.offset.y = towerStats.levels.lvl1.offsety;
             tower.body.height = towerStats.levels.lvl1.height;
