@@ -1356,9 +1356,9 @@ let gameState = {
                     attackRange: 150,
                     attackSpeed: 200,
                     offsetx: 10,
-                    offsety: 50,
+                    offsety: 40,
                     width: 60,
-                    height: 20,
+                    height: 30,
                     name: 'MachineGunTower I'
                 },
                 lvl2:{
@@ -1369,9 +1369,9 @@ let gameState = {
                     attackRange: 160,
                     attackSpeed: 175,
                     offsetx: 10,
-                    offsety: 50,
+                    offsety: 40,
                     width: 60,
-                    height: 20,
+                    height: 30,
                     name: 'MachineGunTower II'
                 },
                 lvl3:{
@@ -1382,9 +1382,9 @@ let gameState = {
                     attackRange: 170,
                     attackSpeed: 125,
                     offsetx: 10,
-                    offsety: 50,
+                    offsety: 40,
                     width: 60,
-                    height: 20,
+                    height: 30,
                     name: 'MachineGunTower III'
                 }
             },
