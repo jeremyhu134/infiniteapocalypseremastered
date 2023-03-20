@@ -159,31 +159,19 @@ let gameState = {
                 gameState.selected.select = null;
             }
             else if(gameState.keys.ONE.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'factory',gameState.factoryStats);
+                gameState.blueprint.create(gameState.arena,gameState.gameTowers[0],);
             }
             else if(gameState.keys.TWO.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'woodWall',gameState.woodWallStats);
-                gameState.blueprintSprite.body.offset.y = 15;
-                gameState.blueprintSprite.body.height = 15;
+                gameState.blueprint.create(gameState.arena,gameState.gameTowers[1],);
             }
             else if(gameState.keys.THREE.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'gatlingTower',gameState.gatlingTowerStats);
+                gameState.blueprint.create(gameState.arena,gameState.gameTowers[2],);
             }
             else if(gameState.keys.FOUR.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'electroTower',gameState.electroTowerStats);
-                gameState.blueprintSprite.body.offset.y = 30;
-                gameState.blueprintSprite.body.height = 40;
+                gameState.blueprint.create(gameState.arena,gameState.gameTowers[3],);
             }
             else if(gameState.keys.FIVE.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'barracks',gameState.barrackStats);
-            }
-            else if(gameState.keys.SIX.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'sniperTower',gameState.sniperTowerStats);
-                gameState.blueprintSprite.body.offset.y = 85;
-                gameState.blueprintSprite.body.height = 50;
-            }
-            else if(gameState.keys.SEVEN.isDown && gameState.blueprint.active == false){
-                gameState.blueprint.create(scene,'alienTower',gameState.alienTowerStats);
+                gameState.blueprint.create(gameState.arena,gameState.gameTowers[4],);
             }
         }
     },
@@ -217,7 +205,18 @@ let gameState = {
                 delay: 1,
                 callback: ()=>{
                     if(gameState.selected.select !== null && gameState.selected.select.health > 0){
-                        text.setText(`${gameState.selected.select.currentLevel.name}         ${Math.floor(gameState.selected.select.health)}/${gameState.selected.select.currentLevel.health}`);
+                        var cost;
+                        if(gameState.selected.select.currentLevel.lvl == 1 && gameState.selected.select.towerStats.levels.lvl2.cost){
+                           cost = gameState.selected.select.towerStats.levels.lvl2.cost;
+                        }else if(gameState.selected.select.currentLevel.lvl == 2 && gameState.selected.select.towerStats.levels.lvl3.cost){
+                            cost = gameState.selected.select.towerStats.levels.lvl3.cost;
+                        }else{
+                            cost = 'MAX';
+                        }
+                        if(gameState.selected.select.towerStats.buildingType == 'main'){
+                            cost = 'MAX';
+                        }
+                        text.setText(`${gameState.selected.select.currentLevel.name}         ${Math.floor(gameState.selected.select.health)}/${gameState.selected.select.currentLevel.health}          Upgrade Cost : ${cost}`);
                         icon.setTexture(`${gameState.selected.select.towerStats.sprite}`);
                         if(gameState.selected.select.currentLevel.width > gameState.selected.select.currentLevel.height){
                             icon.scale = 50/gameState.selected.select.currentLevel.width;
@@ -225,7 +224,9 @@ let gameState = {
                             icon.scale = 50/gameState.selected.select.currentLevel.height;  
                         }
                         icon.setFrame(1);
-                        upgradeButton.visible = true;
+                        if(gameState.selected.select.towerStats.buildingType !== 'main'){
+                            upgradeButton.visible = true;
+                        }
                         cancelButton.visible = true;
                     }else{
                         text.setText('');
@@ -2062,6 +2063,18 @@ let gameState = {
                 width: 100,
                 height: 50,
                 name: 'TownHall'
+            },lvl2:{
+                lvl: 2,
+                cost: 0,
+                damage: 0,
+                health: 1000,
+                attackRange: 0,
+                attackSpeed: 0,
+                offsetx: 0,
+                offsety: 50,
+                width: 100,
+                height: 50,
+                name: 'TownHall'
             }
         },
         sprite: 'townHall',
@@ -2073,7 +2086,7 @@ let gameState = {
             tower.body.offset.y = towerStats.levels.lvl1.offsety;
             tower.body.height = towerStats.levels.lvl1.height;
             tower.health = towerStats.levels.lvl1.health;
-            tower.currentLevel = towerStats.levels.lvl1;
+            tower.currentLevel = gameState.townhallStats.levels.lvl1;
             tower.towerStats = towerStats;
             tower.anims.play('townHallIdle',true);
             gameState.createHealthBar(scene,tower,gameState.townhallStats.levels.lvl1.health);
