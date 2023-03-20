@@ -25,7 +25,7 @@ const config = {
 const game = new Phaser.Game(config);
 
 let gameState = {
-    money : 200,
+    money : 250,
     wave: 0,
     characterStats: {
         speed : 100,
@@ -267,7 +267,7 @@ let gameState = {
             delay: 0,
             callback: ()=>{
                 gameState.waveLoop = scene.time.addEvent({
-                    delay: 30000,
+                    delay: 40000,
                     callback: ()=>{
                         gameState.wave += 1;
                         gameState.waveText.setText(`${gameState.wave}`);
@@ -554,16 +554,146 @@ let gameState = {
                                 timeScale: 1,
                                 repeat: 4
                             });
-                        }else if(gameState.wave > 19){
+                        }else if(gameState.wave == 20){
                             scene.time.addEvent({
                                 delay: 10,
                                 callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    gameState.spawnZombies(scene,gameState.zombie1Stats,100);
                                 },  
                                 startAt: 0,
-                                timeScale: 1,
-                                repeat: 70
+                                timeScale: 1
                             }); 
+                        }else if(gameState.wave == 21){
+                            scene.time.addEvent({
+                                delay: 10,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,50);
+                                },  
+                                startAt: 0,
+                                timeScale: 1
+                            }); 
+                        }
+                        else if(gameState.wave == 22){
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,30);
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
+                        }
+                        else if(gameState.wave == 23){
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
+                        }
+                        else if(gameState.wave == 24){
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,10);
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,10);
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,10);
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                        }else if(gameState.wave == 25){
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
+                        }else if(gameState.wave == 26){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,80);
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                        }else if(gameState.wave == 27){
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,30);
+                        }else if(gameState.wave == 28){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,30);
+                        }else if(gameState.wave == 29){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                        }else if(gameState.wave == 30){
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
+                        }else if(gameState.wave == 31){
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                        }else if(gameState.wave == 32){
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,150);
+                        }else if(gameState.wave == 33){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,15);
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,15);
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
+                        }else if(gameState.wave == 34){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
+                        }else if(gameState.wave == 35){
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,50);
+                        }else if(gameState.wave == 36){
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,50);
+                        }else if(gameState.wave == 37){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                        }else if(gameState.wave == 38){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                        }else if(gameState.wave == 39){
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                        }else if(gameState.wave == 40){
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,8);
+                        }else if(gameState.wave == 41){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,20);
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                        }else if(gameState.wave == 42){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,20);
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                        }else if(gameState.wave == 43){
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,20);
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
+                        }else if(gameState.wave == 44){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,5);
+                        }else if(gameState.wave == 45){
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,250);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,250);
+                        }else if(gameState.wave == 46){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,10);
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,40);
+                        }else if(gameState.wave == 47){
+                            gameState.spawnZombies(scene,gameState.zombieGiantStats,5);
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                        }else if(gameState.wave == 48){
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,15);
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                        }else if(gameState.wave == 49){
+                            gameState.spawnZombies(scene,gameState.zombieDogStats,5);
+                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
+                            gameState.spawnZombies(scene,gameState.zombie1Stats,5);
+                            gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
+                        }else if(gameState.wave == 50){
+                            gameState.spawnZombies(scene,gameState.zombieKingStats,1);
+                            scene.time.addEvent({
+                                delay: 10000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
+                                },  
+                                startAt: 0,
+                                timeScale: 1
+                            });
+                            scene.time.addEvent({
+                                delay: 25000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                                    gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                                },  
+                                startAt: 0,
+                                timeScale: 1
+                            });
+                            scene.time.addEvent({
+                                delay: 40000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombie1Stats,100);
+                                },  
+                                startAt: 0,
+                                timeScale: 1
+                            });
+                            scene.time.addEvent({
+                                delay: 55000,
+                                callback: ()=>{
+                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
+                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                                },  
+                                startAt: 0,
+                                timeScale: 1
+                            });
+                        }
+                        else if(gameState.wave == 100){
+                            gameState.spawnZombies(scene,gameState.zombieKingStats,30);
                         }
                     },  
                     startAt: 0,
@@ -780,9 +910,9 @@ let gameState = {
     
     zombieBomberStats:{
         name: "Zombie Bomber",
-        speed: 100,
-        health: 75,
-        damage: 100,
+        speed: 50,
+        health: 50,
+        damage: 75,
         attackRange: 30,
         attackSpeed: 1,
         spawnZombie: function(scene,x,y){
@@ -879,10 +1009,10 @@ let gameState = {
     
     zombieKingStats:{
         name: "Zombie King",
-        speed: 10,
-        health: 50000,
+        speed: 5,
+        health: 10000,
         damage: 500,
-        attackRange: 100,
+        attackRange: 150,
         attackSpeed: 3000,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieKing`).setDepth(0);
@@ -890,6 +1020,8 @@ let gameState = {
             zombie.body.offset.y = 100;
             zombie.body.height = 100;
             zombie.anims.play(`zombieKingSpawn`);
+            zombie.health = gameState.zombieKingStats.health;
+            gameState.createHealthBar(scene,zombie,gameState.zombieKingStats.health)
             scene.time.addEvent({
                 delay: 1310,
                 callback: ()=>{
@@ -928,7 +1060,7 @@ let gameState = {
             return target;
         },
         behaviourLoop: function (scene,zombie){
-            zombie.health = gameState.zombieKingStats.health;
+            
             zombie.setDepth(zombie.y);
             var target = gameState.zombieKingStats.findTarget(scene,zombie);
             var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
@@ -983,14 +1115,16 @@ let gameState = {
     
     zombieWizardStats:{
         name: "Zombie Wizard",
-        speed: 25,
-        health: 1500,
-        damage: 25,
+        speed: 20,
+        health: 800,
+        damage: 20,
         attackRange: 200,
-        attackSpeed: 1500,
+        attackSpeed: 2000,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(Math.random()*11,Math.random()*window.innerHeight-32,`zombieWizard`).setDepth(1);
             zombie.anims.play(`zombieWizardSpawn`);
+            zombie.health = gameState.zombieWizardStats.health;
+            gameState.createHealthBar(scene,zombie,gameState.zombieWizardStats.health)
             scene.time.addEvent({
                 delay: 1310,
                 callback: ()=>{
@@ -1045,7 +1179,6 @@ let gameState = {
             return target;
         },
         behaviourLoop: function (scene,zombie){
-            zombie.health = gameState.zombieWizardStats.health;
             var target = gameState.zombieWizardStats.findTarget(scene,zombie);
             var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
             var spawnLoop = scene.time.addEvent({
@@ -1233,12 +1366,14 @@ let gameState = {
         name: "Zombie Dog",
         speed: 125,
         health: 50,
-        damage: 10,
+        damage: 5,
         attackRange: 20,
-        attackSpeed: 500,
+        attackSpeed: 200,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieDog`).setDepth(1);
             zombie.anims.play(`zombieDogSpawn`);
+            zombie.health = gameState.zombieDogStats.health;
+            gameState.createHealthBar(scene,zombie,gameState.zombieDogStats.health);
             scene.time.addEvent({
                 delay: 300,
                 callback: ()=>{
@@ -1277,7 +1412,6 @@ let gameState = {
             return target;
         },
         behaviourLoop: function (scene,zombie){
-            zombie.health = gameState.zombieDogStats.health;
             var target = gameState.zombieDogStats.findTarget(scene,zombie);
             var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
             var loop = scene.time.addEvent({
