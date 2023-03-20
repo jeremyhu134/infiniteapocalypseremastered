@@ -50,7 +50,6 @@ class ArenaScene extends Phaser.Scene {
         gameState.townhallStats.spawnTower(this,gameState.townhallStats,600,333);
         this.scene.launch('BuildScene');
         //this.physics.add.overlap(gameState.blueprint, gameState.buildings)
-        
         this.time.addEvent({
             delay: 1000,
             callback: ()=>{
@@ -60,6 +59,7 @@ class ArenaScene extends Phaser.Scene {
             timeScale: 1,
             repeat: -1
         }); 
+        
     }
     update(){
         gameState.blueprint.checkControls(this);

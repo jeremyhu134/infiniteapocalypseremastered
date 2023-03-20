@@ -11,7 +11,7 @@ const config = {
         arcade: {
             gravity: { y: 0 },
             enableBody: true,
-            //debug: true
+            debug: true
         }
     },
     scene:[MenuScene,PauseScene,ArenaScene,BuildScene],
@@ -342,15 +342,6 @@ let gameState = {
                                 timeScale: 1,
                                 repeat: 9
                             }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            }); 
                         }else if(gameState.wave == 8){
                             scene.time.addEvent({
                                 delay: 1000,
@@ -368,7 +359,7 @@ let gameState = {
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: 9
+                                repeat: 4
                             }); 
                         }
                         else if(gameState.wave == 9){
@@ -388,7 +379,7 @@ let gameState = {
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: 14
+                                repeat: 9
                             }); 
                         }
                         else if(gameState.wave == 10){
@@ -399,7 +390,7 @@ let gameState = {
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: 24
+                                repeat: 19
                             }); 
                         }else if(gameState.wave == 11){
                             scene.time.addEvent({
@@ -428,7 +419,7 @@ let gameState = {
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: 24
+                                repeat: 14
                             });
                         }else if(gameState.wave == 13){
                             scene.time.addEvent({
@@ -447,7 +438,7 @@ let gameState = {
                                 },  
                                 startAt: 0,
                                 timeScale: 1,
-                                repeat: 9
+                                repeat: 4
                             });
                         }else if(gameState.wave == 14){
                             scene.time.addEvent({
@@ -624,7 +615,7 @@ let gameState = {
                         }else if(gameState.wave == 39){
                             gameState.spawnZombies(scene,gameState.zombieDogStats,1);
                         }else if(gameState.wave == 40){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,8);
+                            gameState.spawnZombies(scene,gameState.zombieWizardStats,7);
                         }else if(gameState.wave == 41){
                             gameState.spawnZombies(scene,gameState.zombie1Stats,20);
                             gameState.spawnZombies(scene,gameState.zombieDogStats,20);
@@ -1182,7 +1173,7 @@ let gameState = {
             var target = gameState.zombieWizardStats.findTarget(scene,zombie);
             var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
             var spawnLoop = scene.time.addEvent({
-                delay: 10000,
+                delay: 15000,
                 callback: ()=>{
                     scene.time.addEvent({
                         delay: 1,
@@ -1860,9 +1851,9 @@ let gameState = {
                     attackRange: 150,
                     attackSpeed: 10,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 20,
                     width: 50,
-                    height: 50,
+                    height: 30,
                     name: 'Repair Tower I'
                 },
                 lvl2:{
@@ -1873,9 +1864,9 @@ let gameState = {
                     attackRange: 150,
                     attackSpeed: 10,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 20,
                     width: 50,
-                    height: 50,
+                    height: 30,
                     name: 'Repair Tower II'
                 },
                 lvl3:{
@@ -1886,9 +1877,9 @@ let gameState = {
                     attackRange: 150,
                     attackSpeed: 125,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 20,
                     width: 50,
-                    height: 50,
+                    height: 30,
                     name: 'RepairTower III'
                 }
             },
@@ -1940,9 +1931,13 @@ let gameState = {
                 if(gameState.buildings.getChildren().length > 0){
                     for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
                         dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], building);
-                        if(dist<closest && gameState.buildings.getChildren()[i] !== building && gameState.buildings.getChildren()[i].health < gameState.buildings.getChildren()[i].currentLevel.health){
-                            closest = dist;
-                            target = gameState.buildings.getChildren()[i];
+                        if(gameState.buildings.getChildren()[i].buildingType !== "troop"){
+                            if(dist<closest && gameState.buildings.getChildren()[i] !== building && gameState.buildings.getChildren()[i].health < gameState.buildings.getChildren()[i].currentLevel.health){
+                                closest = dist;
+
+                                    target = gameState.buildings.getChildren()[i];
+
+                            }
                         }
                     }
                 }
@@ -2014,7 +2009,7 @@ let gameState = {
                 lvl1:{
                     lvl:1,
                     cost: 100,
-                    damage: 0.1,
+                    damage: 0.08,
                     health: 80,
                     attackRange: 100,
                     attackSpeed: 100,
@@ -2027,7 +2022,7 @@ let gameState = {
                 lvl2:{
                     lvl:2,
                     cost: 150,
-                    damage: 0.12,
+                    damage: 0.1,
                     health: 120,
                     attackRange: 100,
                     attackSpeed: 100,
@@ -2040,7 +2035,7 @@ let gameState = {
                 lvl3:{
                     lvl:3,
                     cost: 300,
-                    damage: 0.15,
+                    damage: 0.13,
                     health: 160,
                     attackRange: 100,
                     attackSpeed: 100,
@@ -2177,6 +2172,138 @@ let gameState = {
                     timeScale: 1,
                     repeat: -1
                 });  
+            }
+        },
+        //BarracksTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl: 1,
+                    cost: 400,
+                    damage: 0,
+                    health: 200,
+                    attackRange: 10000,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'Barracks I'
+                },
+                lvl2:{
+                    lvl: 2,
+                    cost: 400,
+                    damage: 0,
+                    health: 225,
+                    attackRange: 10000,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'Barracks II'
+                },
+                lvl3:{
+                    lvl: 3,
+                    cost: 500,
+                    damage: 0,
+                    health: 250,
+                    attackRange: 10000,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'Barracks III'
+                }
+            },
+            sprite: 'barracksTower',
+            attackType: 'normal',
+            buildingType: 'spawner',
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'barracksTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.gameTowers[5].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var loop = scene.time.addEvent({
+                    delay: 10000,
+                    callback: ()=>{
+                        if(building.health >0){
+                            gameState.humanGuardStats.spawnHuman(scene, building.x, building.y);
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                var loop1 = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health <= 0){
+                            gameState.createExplosion(scene,building.x,building.y);
+                            building.destroy();
+                            loop.destroy();
+                            loop1.destroy();
+                            building.destroyHB();
+                        }else{
+                            if(gameState.zombies.getChildren().length > 0){
+                                loop.paused = false;
+                                building.anims.play(`barracksTower${building.currentLevel.lvl}Action`,true);
+                            }else{
+                                loop.paused = true;
+                                building.anims.play(`barracksTower${building.currentLevel.lvl}Idle`,true);
+                            }
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
             }
         },
     ],
@@ -2548,34 +2675,26 @@ let gameState = {
     },
     humanGuardStats:{
         name: "Human Guard",
-        speed: 30,
-        health: 100,
-        damage: 10,
+        speed: 40,
+        health: 50,
+        damage: 2,
         attackRange: 150,
-        attackSpeed: 200,
-        spawnHuman: function(scene,x,y,barracks){
+        attackSpeed: 100,
+        buildingType: "troop",
+        spawnHuman: function(scene,x,y){
             var human = gameState.buildings.create(x,y,`humanGuard`).setDepth(1);
             human.anims.play(`humanGuardSpawn`);
+            human.health = gameState.humanGuardStats.health;
+            gameState.createHealthBar(scene,human,gameState.humanGuardStats.health);
+            human.buildingType = gameState.humanGuardStats.buildingType;
             scene.time.addEvent({
                 delay: 1310,
                 callback: ()=>{
-                    gameState.humanGuardStats.behaviourLoop(scene,human,barracks);
+                    gameState.humanGuardStats.behaviourLoop(scene,human);
                 },  
                 startAt: 0,
                 timeScale: 1
             }); 
-        },
-        movement: function (scene,human,target,barracks){
-            var x = barracks.x+Math.random()*gameState.barrackStats.guardRadius*2-gameState.barrackStats.guardRadius;
-            var y = barracks.y+Math.random()*gameState.barrackStats.guardRadius*2-gameState.barrackStats.guardRadius;
-            scene.physics.moveTo(human,x,y,gameState.humanGuardStats.speed);
-            human.anims.play('humanGuardWalk',true);
-            if(human.x < x){
-                human.flipX = false;
-            }
-            else if(human.x > x){
-                human.flipX = true;
-            }
         },
         attack: function (scene, target,human){
             if(human.x < target){
@@ -2587,19 +2706,16 @@ let gameState = {
             var bullet = gameState.bullets.create(human.x,human.y,'bullet');
             gameState.angle=Phaser.Math.Angle.Between(human.x,human.y,target.x,target.y);
             bullet.setRotation(gameState.angle); 
-            scene.physics.moveTo(bullet,target.x,target.y,300);
+            scene.physics.moveToObject(bullet, target, null, 500);
             var bulletLoop = scene.time.addEvent({
-                delay: 10000,
+                delay: 500,
                 callback: ()=>{
                     bullet.destroy();
+                    bulletLoop.destroy();
+                    target.health -= gameState.humanGuardStats.damage;
                 },  
                 startAt: 0,
                 timeScale: 1
-            });
-            scene.physics.add.overlap(bullet, gameState.zombies,(bull, targ)=>{
-                bulletLoop.destroy();
-                bull.destroy();
-                targ.health -= gameState.humanGuardStats.damage;
             });
         },
         findTarget: function(scene,human){
@@ -2617,9 +2733,8 @@ let gameState = {
             }
             return target;
         },
-        behaviourLoop: function (scene,human,barracks){
+        behaviourLoop: function (scene,human){
             human.anims.play(`humanGuardWalk`);
-            human.health = gameState.humanGuardStats.health;
             var target = gameState.humanGuardStats.findTarget(scene,human);
             var dist = Phaser.Math.Distance.BetweenPoints(target, human);
             var loop = scene.time.addEvent({
@@ -2631,41 +2746,21 @@ let gameState = {
                 timeScale: 1,
                 repeat: -1
             }); 
-            var moveLoop = scene.time.addEvent({
-                delay: 3000,
-                callback: ()=>{
-                    if(loop.paused == true){
-                        gameState.humanGuardStats.movement(scene,human,target,barracks);
-                    }
-                },  
-                startAt: 0,
-                timeScale: 1,
-                repeat:-1
-            }); 
             loop.paused = true;
             var bLoop = scene.time.addEvent({
                 delay: 1,
                 callback: ()=>{
-                    if(barracks.health <= 0){
-                        bLoop.destroy();
-                        loop.destroy();
-                        moveLoop.destroy();
-                        human.anims.play('humanGuardDeath',true);
-                        human.setVelocityX(0);
-                        human.setVelocityY(0);
-                        scene.time.addEvent({
-                            delay: 400,
-                            callback: ()=>{
-                            human.destroy(); 
-                            },  
-                            startAt: 0,
-                            timeScale: 1
-                        }); 
-                    }
                     if(human.health > 0){
+                        human.health -= 0.04;
                         human.depth = human.y;
                         target = gameState.humanGuardStats.findTarget(scene,human);
                         dist = Phaser.Math.Distance.BetweenPoints(target, human);
+                        if(gameState.zombies.getChildren().length == 0){
+                            human.setVelocityX(0);
+                            human.setVelocityY(0);
+                            loop.paused = true;
+                            human.anims.play('humanGuardWalk',true);
+                        }
                         if(dist < gameState.humanGuardStats.attackRange){
                             human.setVelocityX(0);
                             human.setVelocityY(0);
@@ -2673,14 +2768,20 @@ let gameState = {
                             human.anims.play('humanGuardAction',true);
                         }
                         else {
+                            if(target.x >= human.x){
+                                human.flipX = false;
+                            }else{
+                                human.flipX = true;
+                            }
+                            human.anims.play('humanGuardWalk',true);
                             loop.paused = true;
+                            scene.physics.moveToObject(human, target, gameState.humanGuardStats.speed);
                         }
                     }
                     else {
-                        barracks.guardCount -= 1;
+                        
                         bLoop.destroy();
                         loop.destroy();
-                        moveLoop.destroy();
                         human.anims.play('humanGuardDeath',true);
                         human.setVelocityX(0);
                         human.setVelocityY(0);

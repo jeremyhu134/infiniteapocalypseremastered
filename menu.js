@@ -23,7 +23,7 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('sniperTower','images/sniperTower.png',{frameWidth: 45,frameHeight:135});
         this.load.spritesheet('electroTower','images/electroTower.png',{frameWidth: 40,frameHeight:70});
         this.load.spritesheet('electricWave','images/electricWave.png',{frameWidth: 400,frameHeight:400});
-        this.load.spritesheet('barracks','images/barracks.png',{frameWidth: 50,frameHeight:50});
+        this.load.spritesheet('barracksTower','images/barracksTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('humanGuard','images/humanGuard.png',{frameWidth: 32,frameHeight:32});
         this.load.spritesheet('woodWall','images/woodWall.png',{frameWidth: 18,frameHeight:30});
         this.load.spritesheet('ufo','images/ufo.png',{frameWidth: 70,frameHeight:44});
@@ -360,16 +360,41 @@ class MenuScene extends Phaser.Scene {
             frameRate: 1,
             frames:this.anims.generateFrameNames('humanGuard',{start: 34,end: 34})
         });
+        
+        
+        
         this.anims.create({
-            key: 'barracksIdle',
-            frameRate: 1,
-            frames:this.anims.generateFrameNames('barracks',{start: 0,end: 0})
+            key: 'barracksTower1Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('barracksTower',{start: 1,end: 2})
         });
         this.anims.create({
-            key: 'barracksAction',
+            key: 'barracksTower1Action',
             frameRate: 10,
             repeat: -1,
-            frames:this.anims.generateFrameNames('barracks',{start: 0,end: 1})
+            frames:this.anims.generateFrameNames('barracksTower',{start: 3,end: 4})
+        });
+        this.anims.create({
+            key: 'barracksTower2Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('barracksTower',{start: 5,end: 6})
+        });
+        this.anims.create({
+            key: 'barracksTower2Action',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('barracksTower',{start: 7,end: 8})
+        });
+        this.anims.create({
+            key: 'barracksTower3Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('barracksTower',{start: 9,end: 10})
+        });
+        this.anims.create({
+            key: 'barracksTower3Action',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('barracksTower',{start: 11,end: 12})
         });
         
         
@@ -468,7 +493,7 @@ class MenuScene extends Phaser.Scene {
         this.add.image(window.innerWidth/2,100,'title');
         this.add.image(200,window.innerHeight/2,'zombie1').setScale(10);
         this.add.image(window.innerWidth-200,window.innerHeight/2,'character').setScale(10);
-        var button = this.add.image(window.innerWidth/2,window.innerHeight/2,'startButton').setInteractive();
+        var button = this.add.image(600,337,'startButton').setInteractive();
         gameState.globalScene = this;
         button.on('pointerdown', function(pointer){
             gameState.globalScene.scene.start('ArenaScene');
