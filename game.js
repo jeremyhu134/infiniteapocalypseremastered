@@ -52,8 +52,8 @@ let gameState = {
     },
     
     createIcons: function (scene){
-        scene.add.image(950,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
-        gameState.moneyText = scene.add.text( 1010, 5, `${gameState.money}`, {
+        scene.add.image(window.innerWidth-200,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
+        gameState.moneyText = scene.add.text( window.innerWidth - 160, 5, `${gameState.money}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
             fontFamily: 'Qahiri',
@@ -102,7 +102,7 @@ let gameState = {
             gameState.blueprint.button = gameState.blueprintSprite.on('pointerdown', function(pointer){
                 
             });
-            var confirmButton = gameState.buildScene.add.image(1000,615,`confirmButton`).setInteractive().setDepth(100);
+            var confirmButton = gameState.buildScene.add.image(1050,615,`confirmButton`).setInteractive().setDepth(100);
             confirmButton.on('pointerdown', function(pointer){
                 if(gameState.money >= towerStats.levels.lvl1.cost && gameState.blueprint.overLap >5){
                     gameState.money -= towerStats.levels.lvl1.cost;
@@ -204,7 +204,13 @@ let gameState = {
             scene.time.addEvent({
                 delay: 1,
                 callback: ()=>{
-                    if(gameState.selected.select !== null && gameState.selected.select.health > 0){
+                    if(gameState.blueprint.active == true){
+                        text.setText(`${gameState.blueprint.building.levels.lvl1.name}  $${gameState.blueprint.building.levels.lvl1.cost}`);
+                        upgradeButton.visible = false;
+                        cancelButton.visible = false;
+                        icon.setTexture('BLANK');
+                    }
+                    else if(gameState.selected.select !== null && gameState.selected.select.health > 0){
                         var cost;
                         if(gameState.selected.select.currentLevel.lvl == 1 && gameState.selected.select.towerStats.levels.lvl2.cost){
                            cost = gameState.selected.select.towerStats.levels.lvl2.cost;
@@ -2304,6 +2310,169 @@ let gameState = {
                     timeScale: 1,
                     repeat: -1
                 }); 
+            }
+        },
+        //sniperTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 100,
+                    damage: 50,
+                    health: 150,
+                    attackRange: 275,
+                    attackSpeed: 3500,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 40,
+                    height: 30,
+                    name: 'SniperTower I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 200,
+                    damage: 75,
+                    health: 200,
+                    attackRange: 275,
+                    attackSpeed: 3500,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 40,
+                    height: 30,
+                    name: 'SniperTower II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 300,
+                    damage: 100,
+                    health: 250,
+                    attackRange: 275,
+                    attackSpeed: 3500,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 40,
+                    height: 30,
+                    name: 'SniperTower III'
+                }
+            },
+            sprite: 'sniperTower',
+            attackType: 'normal',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'sniperTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                gameState.gameTowers[6].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        var bullet = gameState.bullets.create(building.x,building.y,'bullet');
+                        gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
+                        bullet.setRotation(gameState.angle); 
+                        scene.physics.moveTo(bullet,target.x +(Math.random()*6-10),target.y +(Math.random()*6-10),800);
+                        var bulletLoop = scene.time.addEvent({
+                            delay: 8000,
+                            callback: ()=>{
+                                bullet.destroy();
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        });
+                        scene.physics.add.overlap(bullet, gameState.zombies,(bull, targ)=>{
+                            bulletLoop.destroy();
+                            bull.destroy();
+                            targ.health -= building.currentLevel.damage;
+                        });
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.anims.play(`sniperTower${building.currentLevel.lvl}Action`,true);
+                                    building.attackLoop.paused = false;
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`sniperTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
             }
         },
     ],
