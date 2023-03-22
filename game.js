@@ -52,7 +52,7 @@ let gameState = {
     },
     
     createIcons: function (scene){
-        scene.add.image(window.innerWidth-200,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
+        scene.add.image(950,1010,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
         gameState.moneyText = scene.add.text( window.innerWidth - 160, 5, `${gameState.money}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
