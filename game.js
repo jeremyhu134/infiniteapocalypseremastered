@@ -59,8 +59,8 @@ let gameState = {
             fontFamily: 'Qahiri',
             strokeThickness: 10,
         }).setDepth(window.innerHeight+3);
-        scene.add.image(window.innerWidth-440,10,'waveSign').setOrigin(0,0).setDepth(window.innerHeight+3);
-        gameState.waveText = scene.add.text( window.innerWidth - 390, 5, `${gameState.wave}`, {
+        scene.add.image(1090,10,'waveSign').setOrigin(0,0).setDepth(window.innerHeight+3);
+        gameState.waveText = scene.add.text( 1150, 5, `${gameState.wave}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
             fontFamily: 'Qahiri',
