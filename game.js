@@ -52,21 +52,21 @@ let gameState = {
     },
     
     createIcons: function (scene){
-        scene.add.image(950,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
-        gameState.moneyText = scene.add.text( 1010, 5, `${gameState.money}`, {
+        scene.add.image(1050,10,'moneySign').setOrigin(0,0).setDepth(window.innerHeight+3);
+        gameState.moneyText = scene.add.text(1100, 5, `${gameState.money}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
             fontFamily: 'Qahiri',
             strokeThickness: 10,
         }).setDepth(window.innerHeight+3);
-        scene.add.image(1090,10,'waveSign').setOrigin(0,0).setDepth(window.innerHeight+3);
-        gameState.waveText = scene.add.text( 1150, 5, `${gameState.wave}`, {
+        scene.add.image(900,10,'waveSign').setOrigin(0,0).setDepth(window.innerHeight+3);
+        gameState.waveText = scene.add.text(950, 5, `${gameState.wave}`, {
             fill: '#OOOOOO', 
             fontSize: '30px',
             fontFamily: 'Qahiri',
             strokeThickness: 10,
         }).setDepth(window.innerHeight+3);
-        var button = scene.add.image(window.innerWidth-75,10,'pauseSign').setOrigin(0,0).setDepth(window.innerHeight+3).setInteractive();
+        var button = scene.add.image(10,10,'pauseSign').setOrigin(0,0).setDepth(window.innerHeight+3).setInteractive();
         button.on('pointerdown', function(pointer){
             scene.scene.pause('ArenaScene');
             scene.scene.launch('PauseScene');

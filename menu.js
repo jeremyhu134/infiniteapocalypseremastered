@@ -20,7 +20,6 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('zombieGiant','images/zombieGiant.png',{frameWidth: 40,frameHeight:40});
         this.load.spritesheet('factory','images/factory.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('gatlingTower','images/gatlingTower.png',{frameWidth: 40,frameHeight:40});
-        this.load.spritesheet('sniperTower','images/sniperTower.png',{frameWidth: 45,frameHeight:135});
         this.load.spritesheet('electroTower','images/electroTower.png',{frameWidth: 40,frameHeight:70});
         this.load.spritesheet('electricWave','images/electricWave.png',{frameWidth: 400,frameHeight:400});
         this.load.spritesheet('barracksTower','images/barracksTower.png',{frameWidth: 50,frameHeight:50});
@@ -54,6 +53,7 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('machineGunTower','images/machineGunTower.png',{frameWidth: 80,frameHeight:80});
         this.load.spritesheet('repairTower','images/repairTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('flameThrowerTower','images/flameThrowerTower.png',{frameWidth: 80,frameHeight:80});
+        this.load.spritesheet('sniperTower','images/sniperTower.png',{frameWidth: 40,frameHeight:60});
         
         this.load.spritesheet('townHall','images/townHall.png',{frameWidth: 100,frameHeight:100});
     }
@@ -396,6 +396,40 @@ class MenuScene extends Phaser.Scene {
             repeat: -1,
             frames:this.anims.generateFrameNames('barracksTower',{start: 11,end: 12})
         });
+        
+        
+        
+        this.anims.create({
+            key: 'sniperTower1Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start: 1,end: 1})
+        });
+        this.anims.create({
+            key: 'sniperTower1Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start: 2,end: 2})
+        });
+        this.anims.create({
+            key: 'sniperTower2Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start: 3,end: 3})
+        });
+        this.anims.create({
+            key: 'sniperTower2Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start:4 ,end: 4})
+        });
+        this.anims.create({
+            key: 'sniperTower3Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start: 5,end: 5})
+        });
+        this.anims.create({
+            key: 'sniperTower3Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('sniperTower',{start:6 ,end: 6})
+        });
+        
         
         
         
