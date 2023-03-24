@@ -2585,7 +2585,7 @@ let gameState = {
                         bullet.setRotation(gameState.angle); 
                         bullet.damage = building.currentLevel.damage
                         scene.physics.moveToObject(bullet,target,null,3000);
-                        bullet.body.velocity.y = -400;
+                        bullet.body.velocity.y -= 400;
                         var bulletLoop2 = scene.time.addEvent({
                             delay: 1,
                             callback: ()=>{
