@@ -907,9 +907,9 @@ let gameState = {
     
     zombieBomberStats:{
         name: "Zombie Bomber",
-        speed: 50,
+        speed: 60,
         health: 50,
-        damage: 75,
+        damage: 85,
         attackRange: 30,
         attackSpeed: 1,
         spawnZombie: function(scene,x,y){
@@ -1009,7 +1009,7 @@ let gameState = {
         speed: 5,
         health: 10000,
         damage: 500,
-        attackRange: 150,
+        attackRange: 30,
         attackSpeed: 3000,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieKing`).setDepth(0);
@@ -1365,7 +1365,7 @@ let gameState = {
         health: 50,
         damage: 5,
         attackRange: 20,
-        attackSpeed: 200,
+        attackSpeed: 400,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieDog`).setDepth(1);
             zombie.anims.play(`zombieDogSpawn`);
@@ -1645,7 +1645,7 @@ let gameState = {
             levels:{
                 lvl1:{
                     lvl: 1,
-                    cost: 25,
+                    cost: 10,
                     damage: 0,
                     health: 50,
                     attackRange: 0,
@@ -2475,6 +2475,185 @@ let gameState = {
                 });  
             }
         },
+        //pipeMortorTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 100,
+                    damage: 30,
+                    health: 150,
+                    attackRange: 350,
+                    attackSpeed: 6000,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 30,
+                    height: 20,
+                    name: 'PipeMortor I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 150,
+                    damage: 40,
+                    health: 160,
+                    attackRange: 350,
+                    attackSpeed: 6000,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 30,
+                    height: 20,
+                    name: 'PipeMortor II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 300,
+                    damage: 50,
+                    health: 170,
+                    attackRange: 350,
+                    attackSpeed: 6000,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 30,
+                    height: 20,
+                    name: 'PipeMortor III'
+                }
+            },
+            sprite: 'pipeMortorTower',
+            attackType: 'normal',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'pipeMortorTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                gameState.gameTowers[7].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        var bullet = gameState.bullets.create(building.x,building.y,'bullet').setScale(2);
+                        gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
+                        bullet.setRotation(gameState.angle); 
+                        bullet.damage = building.currentLevel.damage
+                        scene.physics.moveToObject(bullet,target,null,3000);
+                        bullet.body.velocity.y = -400;
+                        var bulletLoop2 = scene.time.addEvent({
+                            delay: 1,
+                            callback: ()=>{
+                                bullet.body.velocity.y += 4.4;
+                            },  
+                            startAt: 0,
+                            timeScale: 1,
+                            repeat: -1
+                        });
+                        var bulletLoop = scene.time.addEvent({
+                            delay: 3000,
+                            callback: ()=>{
+                                bulletLoop.destroy();
+                                bulletLoop2.destroy();
+                                gameState.createExplosion(scene,bullet.x,bullet.y);
+                                if(gameState.zombies.getChildren().length > 0){
+                                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){
+                                        if(Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], bullet) < 100){
+                                            gameState.zombies.getChildren()[i].health -= bullet.damage;
+                                        }
+                                    } 
+                                }
+                                bullet.destroy();
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        });
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.anims.play(`pipeMortorTower${building.currentLevel.lvl}Idle`,true);
+                                    building.attackLoop.paused = false;
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`pipeMortorTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
+            }
+        },
     ],
     
     
@@ -2844,7 +3023,7 @@ let gameState = {
     },
     humanGuardStats:{
         name: "Human Guard",
-        speed: 40,
+        speed: 35,
         health: 50,
         damage: 2,
         attackRange: 150,
@@ -2920,7 +3099,7 @@ let gameState = {
                 delay: 1,
                 callback: ()=>{
                     if(human.health > 0){
-                        human.health -= 0.04;
+                        human.health -= 0.06;
                         human.depth = human.y;
                         target = gameState.humanGuardStats.findTarget(scene,human);
                         dist = Phaser.Math.Distance.BetweenPoints(target, human);

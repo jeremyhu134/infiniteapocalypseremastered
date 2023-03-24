@@ -59,7 +59,7 @@ class ArenaScene extends Phaser.Scene {
             timeScale: 1,
             repeat: -1
         }); 
-        
+        gameState.spawnZombies(this,gameState.zombie1Stats,20);
     }
     update(){
         gameState.blueprint.checkControls(this);

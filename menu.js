@@ -54,6 +54,7 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('repairTower','images/repairTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('flameThrowerTower','images/flameThrowerTower.png',{frameWidth: 80,frameHeight:80});
         this.load.spritesheet('sniperTower','images/sniperTower.png',{frameWidth: 40,frameHeight:60});
+        this.load.spritesheet('pipeMortorTower','images/pipeMortorTower.png',{frameWidth: 50,frameHeight:50});
         
         this.load.spritesheet('townHall','images/townHall.png',{frameWidth: 100,frameHeight:100});
     }
@@ -428,6 +429,25 @@ class MenuScene extends Phaser.Scene {
             key: 'sniperTower3Action',
             frameRate: 10,
             frames:this.anims.generateFrameNames('sniperTower',{start:6 ,end: 6})
+        });
+        
+        
+        
+        
+        this.anims.create({
+            key: 'pipeMortorTower1Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('pipeMortorTower',{start:1 ,end: 1})
+        });
+        this.anims.create({
+            key: 'pipeMortorTower2Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('pipeMortorTower',{start:2 ,end: 2})
+        });
+        this.anims.create({
+            key: 'pipeMortorTower3Idle',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('pipeMortorTower',{start:3 ,end: 3})
         });
         
         
