@@ -24,6 +24,8 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('electricWave','images/electricWave.png',{frameWidth: 400,frameHeight:400});
         this.load.spritesheet('barracksTower','images/barracksTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('humanGuard','images/humanGuard.png',{frameWidth: 32,frameHeight:32});
+        this.load.spritesheet('humanGuard2','images/humanGuard2.png',{frameWidth: 32,frameHeight:32});
+        this.load.spritesheet('humanGuard3','images/humanGuard3.png',{frameWidth: 32,frameHeight:32});
         this.load.spritesheet('woodWall','images/woodWall.png',{frameWidth: 18,frameHeight:30});
         this.load.spritesheet('ufo','images/ufo.png',{frameWidth: 70,frameHeight:44});
         this.load.spritesheet('alienTower','images/alienTower.png',{frameWidth: 50,frameHeight:50});
@@ -57,6 +59,11 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('pipeMortorTower','images/pipeMortorTower.png',{frameWidth: 50,frameHeight:50});
         
         this.load.spritesheet('townHall','images/townHall.png',{frameWidth: 100,frameHeight:100});
+        
+        
+        
+        //
+        this.load.spritesheet('overWorldTrophy','images/overWorldTrophy.png',{frameWidth: 80,frameHeight:100});
     }
     create() {
         this.scale.lockOrientation('landscape')
@@ -74,6 +81,14 @@ class MenuScene extends Phaser.Scene {
             frames:this.anims.generateFrameNames('character',{start: 0,end: 11})
         });
         
+        
+        //Trophys
+        this.anims.create({
+            key: 'overWorldTrophyA',
+            frameRate: 8,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('overWorldTrophy',{start: 0,end: 7})
+        });
         
         
         this.anims.create({
@@ -340,26 +355,86 @@ class MenuScene extends Phaser.Scene {
             frames:this.anims.generateFrameNames('humanGuard',{start: 1,end: 16})
         });
         this.anims.create({
-            key: 'humanGuardIdle',
+            key: 'humanGuardIdle1',
             frameRate: 25,
             repeat: -1,
             frames:this.anims.generateFrameNames('humanGuard',{start: 17,end: 17})
         });
         this.anims.create({
-            key: 'humanGuardWalk',
+            key: 'humanGuardWalk1',
             frameRate: 17,
             repeat: -1,
             frames:this.anims.generateFrameNames('humanGuard',{start: 17,end: 28})
         });
         this.anims.create({
-            key: 'humanGuardDeath',
+            key: 'humanGuardDeath1',
             frameRate: 10,
             frames:this.anims.generateFrameNames('humanGuard',{start: 29,end: 33})
         });
         this.anims.create({
-            key: 'humanGuardAction',
+            key: 'humanGuardAction1',
             frameRate: 1,
             frames:this.anims.generateFrameNames('humanGuard',{start: 34,end: 34})
+        });
+        
+        
+        
+        this.anims.create({
+            key: 'humanGuardSpawn2',
+            frameRate: 13,
+            frames:this.anims.generateFrameNames('humanGuard2',{start: 1,end: 16})
+        });
+        this.anims.create({
+            key: 'humanGuardIdle2',
+            frameRate: 25,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('humanGuard2',{start: 17,end: 17})
+        });
+        this.anims.create({
+            key: 'humanGuardWalk2',
+            frameRate: 17,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('humanGuard2',{start: 17,end: 28})
+        });
+        this.anims.create({
+            key: 'humanGuardDeath2',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('humanGuard2',{start: 29,end: 33})
+        });
+        this.anims.create({
+            key: 'humanGuardAction2',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('humanGuard2',{start: 34,end: 34})
+        });
+        
+        
+        
+        this.anims.create({
+            key: 'humanGuardSpawn3',
+            frameRate: 13,
+            frames:this.anims.generateFrameNames('humanGuard3',{start: 1,end: 16})
+        });
+        this.anims.create({
+            key: 'humanGuardIdle3',
+            frameRate: 25,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('humanGuard3',{start: 17,end: 17})
+        });
+        this.anims.create({
+            key: 'humanGuardWalk3',
+            frameRate: 17,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('humanGuard3',{start: 17,end: 28})
+        });
+        this.anims.create({
+            key: 'humanGuardDeath3',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('humanGuard3',{start: 29,end: 33})
+        });
+        this.anims.create({
+            key: 'humanGuardAction3',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('humanGuard3',{start: 34,end: 34})
         });
         
         
@@ -504,6 +579,32 @@ class MenuScene extends Phaser.Scene {
             repeat: -1,
             frames:this.anims.generateFrameNames('repairTower',{start: 7,end: 10})
         });
+        this.anims.create({
+            key: 'repairTower2Idle',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('repairTower',{start: 1,end: 6})
+        });
+        this.anims.create({
+            key: 'repairTower2Action',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('repairTower',{start: 7,end: 10})
+        });
+        
+        this.anims.create({
+            key: 'repairTower3Idle',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('repairTower',{start: 1,end: 6})
+        });
+        this.anims.create({
+            key: 'repairTower3Action',
+            frameRate: 10,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('repairTower',{start: 7,end: 10})
+        });
+        
         
         
         
@@ -544,10 +645,15 @@ class MenuScene extends Phaser.Scene {
             frames:this.anims.generateFrameNames('flameThrowerTower',{start: 5,end: 6})
         });
         
+        gameState.createBackground(this);
         this.add.image(window.innerWidth/2,100,'title');
         this.add.image(200,window.innerHeight/2,'zombie1').setScale(10);
         this.add.image(window.innerWidth-200,window.innerHeight/2,'character').setScale(10);
         var button = this.add.image(600,337,'startButton').setInteractive();
+        if(gameState.thingsToSave.trophys.overWorld == true){
+            var overWorldTrophy = this.add.sprite(400,200,'overWorldTrophy').setScale(0.5);
+            overWorldTrophy.anims.play('overWorldTrophyA',true);
+        }
         gameState.globalScene = this;
         button.on('pointerdown', function(pointer){
             gameState.globalScene.scene.start('ArenaScene');
