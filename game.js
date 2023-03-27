@@ -716,6 +716,13 @@ let gameState = {
                                 gameState.wave = 50;
                             }
                         }
+                        else if(gameState.thingsToSave.trophys.hellWorld == false){
+                            if(gameState.wave == 1){
+                                gameState.spawnZombies(scene, gameState.demonZombie1Stats,5);
+                            }else{
+                                gameState.spawnZombies(scene, gameState.demonZombie1Stats,10);
+                            }
+                        }
                     },  
                     startAt: 0,
                     timeScale: 1,
@@ -1152,8 +1159,8 @@ let gameState = {
                                             callback: ()=>{
                                                 trophy.b1.destroy();
                                                 scene.scene.start('MenuScene');
-                                                gameState.save();
                                                 gameState.thingsToSave.trophys.overWorld = true;
+                                                gameState.save();
                                             },  
                                             startAt: 0,
                                             timeScale: 1
@@ -1525,6 +1532,110 @@ let gameState = {
         }
     },
 
+    
+    
+    demonZombie1Stats:{
+        name: "Zombie Demon",
+        speed: 25,
+        health: 80,
+        damage: 5,
+        attackRange: 20,
+        attackSpeed: 1000,
+        spawnZombie: function(scene,x,y){
+            var zombie = gameState.zombies.create(x,y,`demonZombie1`).setDepth(1);
+            zombie.anims.play(`demonZombie1Spawn`);
+            zombie.health = gameState.demonZombie1Stats.health;
+            gameState.createHealthBar(scene,zombie,gameState.demonZombie1Stats.health);
+            scene.time.addEvent({
+                delay: 1310,
+                callback: ()=>{
+                    gameState.demonZombie1Stats.behaviourLoop(scene,zombie);
+                },  
+                startAt: 0,
+                timeScale: 1
+            }); 
+        },
+        movement: function (scene,zombie,target){
+            scene.physics.moveTo(zombie,target.x, target.y,gameState.demonZombie1Stats.speed);
+            zombie.anims.play('demonZombie1Walk',true);
+            if(target.x > zombie.x){
+                zombie.flipX = false;
+            }
+            else if(target.x < zombie.x){
+                zombie.flipX = true;
+            }
+        },
+        attack: function (scene, target){
+            target.health -= gameState.demonZombie1Stats.damage;
+        },
+        findTarget: function(scene,zombie){
+            var dist;
+            var closest = 10000;
+            var target;
+            if( gameState.buildings.getChildren().length >0){
+                for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
+                    dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], zombie);
+                    if(dist<closest){
+                        closest = dist;
+                        target = gameState.buildings.getChildren()[i];
+                    }
+                }
+            }
+            return target;
+        },
+        behaviourLoop: function (scene,zombie){
+            var target = gameState.demonZombie1Stats.findTarget(scene,zombie);
+            var dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
+            var loop = scene.time.addEvent({
+                delay: gameState.demonZombie1Stats.attackSpeed,
+                callback: ()=>{
+                    gameState.demonZombie1Stats.attack(scene,target);
+                },  
+                startAt: 0,
+                timeScale: 1,
+                repeat: -1
+            }); 
+            loop.paused = true;
+            var bLoop = scene.time.addEvent({
+                delay: 1,
+                callback: ()=>{
+                    if(zombie.health > 0){
+                        target = gameState.demonZombie1Stats.findTarget(scene,zombie);
+                        dist = Phaser.Math.Distance.BetweenPoints(target, zombie);
+                        if(dist < gameState.demonZombie1Stats.attackRange){
+                            zombie.setVelocityX(0);
+                            zombie.setVelocityY(0);
+                            loop.paused = false;
+                        }
+                        else {
+                            loop.paused = true;
+                            gameState.demonZombie1Stats.movement(scene,zombie,target);
+                        }
+                    }
+                    else {
+                        bLoop.destroy();
+                        loop.destroy();
+                        zombie.anims.play('demonZombie1Death',true);
+                        zombie.setVelocityX(0);
+                        zombie.setVelocityY(0);
+                        scene.time.addEvent({
+                            delay: 400,
+                            callback: ()=>{
+                            zombie.destroy(); 
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        }); 
+                    }
+                },  
+                startAt: 0,
+                timeScale: 1,
+                repeat: -1
+            }); 
+        }
+    },
+    
+    
     
     
     createExplosion: function(scene,x,y){
@@ -2703,6 +2814,171 @@ let gameState = {
                                 else {
                                     building.attackLoop.paused = true;
                                     building.anims.play(`pipeMortorTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
+            }
+        },
+    ],
+    gameTowers2:[
+        //ballistaTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 75,
+                    damage: 20,
+                    health: 60,
+                    attackRange: 175,
+                    attackSpeed: 1800,
+                    offsetx: 0,
+                    offsety: 10,
+                    width: 50,
+                    height: 30,
+                    name: 'BallistaTower I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 125,
+                    damage: 22,
+                    health: 100,
+                    attackRange: 175,
+                    attackSpeed: 1600,
+                    offsetx: 0,
+                    offsety: 10,
+                    width: 50,
+                    height: 30,
+                    name: 'BallistaTower II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 175,
+                    damage: 25,
+                    health: 140,
+                    attackRange: 175,
+                    attackSpeed: 1400,
+                    offsetx: 0,
+                    offsety: 10,
+                    width: 50,
+                    height: 30,
+                    name: 'BallistaTower III'
+                }
+            },
+            sprite: 'ballistaTower',
+            attackType: 'normal',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(Math.ceil(gameState.blueprintSprite.x),Math.ceil(gameState.blueprintSprite.y),'ballistaTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                gameState.gameTowers2[0].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        var bullet = gameState.bullets.create(building.x,building.y,'bullet');
+                        gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
+                        bullet.setRotation(gameState.angle); 
+                        scene.physics.moveTo(bullet,target.x +(Math.random()*6-10),target.y +(Math.random()*6-10),300);
+                        building.anims.play(`ballistaTower${building.currentLevel.lvl}Action`,true);
+                        var bulletLoop = scene.time.addEvent({
+                            delay: 8000,
+                            callback: ()=>{
+                                bullet.destroy();
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        });
+                        scene.physics.add.overlap(bullet, gameState.zombies,(bull, targ)=>{
+                            bulletLoop.destroy();
+                            bull.destroy();
+                            targ.health -= building.currentLevel.damage;
+                        });
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.attackLoop.paused = false;
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`ballistaTower${building.currentLevel.lvl}Idle`,true);
                                 }
                             }
                         }

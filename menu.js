@@ -31,6 +31,12 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('alienTower','images/alienTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('buildingExplosion','images/buildingExplosion.png',{frameWidth: 75,frameHeight:75});
         
+        
+        this.load.spritesheet('ballistaTower','images/ballistaTower.png',{frameWidth: 50,frameHeight:40});
+        
+        this.load.spritesheet('demonZombie1','images/demonZombie1.png',{frameWidth: 32,frameHeight:32});
+        
+        
         this.load.image('bullet','images/bullet.png');
         this.load.image('nothing','images/nothing.png');
         this.load.image('ufoLaser','images/ufoLaser.png');
@@ -89,6 +95,66 @@ class MenuScene extends Phaser.Scene {
             repeat: -1,
             frames:this.anims.generateFrameNames('overWorldTrophy',{start: 0,end: 7})
         });
+        
+        
+        //hellWorld
+        this.anims.create({
+            key: 'demonZombie1Spawn',
+            frameRate: 13,
+            frames:this.anims.generateFrameNames('demonZombie1',{start: 1,end: 16})
+        });
+        this.anims.create({
+            key: 'demonZombie1Idle',
+            frameRate: 25,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('demonZombie1',{start: 17,end: 17})
+        });
+        this.anims.create({
+            key: 'demonZombie1Walk',
+            frameRate: 13,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('demonZombie1',{start: 17,end: 28})
+        });
+        this.anims.create({
+            key: 'demonZombie1Death',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('demonZombie1',{start: 29,end: 33})
+        });
+        
+        
+        this.anims.create({
+            key: 'ballistaTower1Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 2,end: 2})
+        });
+        this.anims.create({
+            key: 'ballistaTower1Action',
+            frameRate: 3,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 1,end: 2})
+        });
+        this.anims.create({
+            key: 'ballistaTower2Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 4,end: 4})
+        });
+        this.anims.create({
+            key: 'ballistaTower2Action',
+            frameRate: 3,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 3,end: 4})
+        });
+        this.anims.create({
+            key: 'ballistaTower3Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 6,end: 6})
+        });
+        this.anims.create({
+            key: 'ballistaTower3Action',
+            frameRate: 3,
+            frames:this.anims.generateFrameNames('ballistaTower',{start: 5,end: 6})
+        });
+        
+        
+        
         
         
         this.anims.create({
