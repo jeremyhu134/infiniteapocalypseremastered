@@ -36,8 +36,19 @@ let gameState = {
     thingsToSave:{
         trophys:{
             overWorld:false,
-            hellWorld:false
+            hellWorld:false,
+            spaceWorld:false,
+            aquaWorld:false
         },
+    },
+    save: function(){
+        window.localStorage.setItem("thingsToSave", JSON.stringify(gameState.thingsToSave));
+    },
+    //loads variable values from localstorage
+    loadSave: function(){
+        if(JSON.parse(window.localStorage.getItem("thingsToSave")) !== null){
+            gameState.thingsToSave = JSON.parse(window.localStorage.getItem("thingsToSave"));
+        }
     },
     
     
@@ -49,7 +60,10 @@ let gameState = {
         else if(gameState.thingsToSave.trophys.hellWorld == false){
             scene.add.image(0,0, 'canyonBackground').setOrigin(0,0).setScale(1);
         }
-        else if(num == 3){
+        else if(gameState.thingsToSave.trophys.spaceWorld == false){
+            scene.add.image(0,0, 'caveBackground').setOrigin(0,0).setScale(1);
+        }
+        else if(gameState.thingsToSave.trophys.aquaWorld == false){
             scene.add.image(0,0, 'caveBackground').setOrigin(0,0).setScale(1);
         }
     },
@@ -285,420 +299,422 @@ let gameState = {
                     callback: ()=>{
                         gameState.wave += 1;
                         gameState.waveText.setText(`${gameState.wave}`);
-                        if(gameState.wave == 1){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            }); 
-                        }else if(gameState.wave == 2){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                        }else if(gameState.wave == 3){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            }); 
-                        }else if(gameState.wave == 4){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 24
-                            }); 
-                        }
-                        else if(gameState.wave == 5){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 29
-                            }); 
-                        }else if(gameState.wave == 6){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 29
-                            }); 
-                        }else if(gameState.wave == 7){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                        }else if(gameState.wave == 8){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            }); 
-                        }
-                        else if(gameState.wave == 9){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                        }
-                        else if(gameState.wave == 10){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            }); 
-                        }else if(gameState.wave == 11){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 49
-                            }); 
-                        }else if(gameState.wave == 12){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 24
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 14
-                            });
-                        }else if(gameState.wave == 13){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            });
-                        }else if(gameState.wave == 14){
-                            scene.time.addEvent({
-                                delay: 2000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                            scene.time.addEvent({
-                                delay: 2000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            });
-                        }else if(gameState.wave == 15){
-                            scene.time.addEvent({
-                                delay: 2000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            }); 
-                            scene.time.addEvent({
-                                delay: 2000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 9
-                            });
-                        }else if(gameState.wave == 16){
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            });
-                        }else if(gameState.wave == 17){
-                            scene.time.addEvent({
-                                delay: 50,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            }); 
-                            scene.time.addEvent({
-                                delay: 1000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 19
-                            });
-                        }else if(gameState.wave == 18){
-                            scene.time.addEvent({
-                                delay: 30,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 39
-                            });
-                        }else if(gameState.wave == 19){
-                            scene.time.addEvent({
-                                delay: 10,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieDogStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 49
-                            }); 
-                            scene.time.addEvent({
-                                delay: 50,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieBomberStats,1);
-                                },  
-                                startAt: 0,
-                                timeScale: 1,
-                                repeat: 4
-                            });
-                        }else if(gameState.wave == 20){
-                            scene.time.addEvent({
-                                delay: 10,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,100);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            }); 
-                        }else if(gameState.wave == 21){
-                            scene.time.addEvent({
-                                delay: 10,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,50);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            }); 
-                        }
-                        else if(gameState.wave == 22){
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,30);
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
-                        }
-                        else if(gameState.wave == 23){
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
-                        }
-                        else if(gameState.wave == 24){
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,10);
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,10);
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,10);
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
-                        }else if(gameState.wave == 25){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
-                        }else if(gameState.wave == 26){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,80);
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
-                        }else if(gameState.wave == 27){
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,30);
-                        }else if(gameState.wave == 28){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,30);
-                        }else if(gameState.wave == 29){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
-                        }else if(gameState.wave == 30){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
-                        }else if(gameState.wave == 31){
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,20);
-                        }else if(gameState.wave == 32){
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,150);
-                        }else if(gameState.wave == 33){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,15);
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,15);
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
-                        }else if(gameState.wave == 34){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
-                        }else if(gameState.wave == 35){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,50);
-                        }else if(gameState.wave == 36){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,50);
-                        }else if(gameState.wave == 37){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,1);
-                        }else if(gameState.wave == 38){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
-                        }else if(gameState.wave == 39){
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,1);
-                        }else if(gameState.wave == 40){
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,7);
-                        }else if(gameState.wave == 41){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,20);
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,20);
-                        }else if(gameState.wave == 42){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,20);
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
-                        }else if(gameState.wave == 43){
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,20);
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
-                        }else if(gameState.wave == 44){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,5);
-                        }else if(gameState.wave == 45){
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,250);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,250);
-                        }else if(gameState.wave == 46){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,10);
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,40);
-                        }else if(gameState.wave == 47){
-                            gameState.spawnZombies(scene,gameState.zombieGiantStats,5);
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
-                        }else if(gameState.wave == 48){
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,15);
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
-                            gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
-                        }else if(gameState.wave == 49){
-                            gameState.spawnZombies(scene,gameState.zombieDogStats,5);
-                            gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
-                            gameState.spawnZombies(scene,gameState.zombie1Stats,5);
-                            gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
-                        }else if(gameState.wave == 50){
-                            gameState.spawnZombies(scene,gameState.zombieKingStats,1);
-                            scene.time.addEvent({
-                                delay: 10000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            });
-                            scene.time.addEvent({
-                                delay: 25000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
-                                    gameState.spawnZombies(scene,gameState.zombieDogStats,20);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            });
-                            scene.time.addEvent({
-                                delay: 40000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombie1Stats,100);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            });
-                            scene.time.addEvent({
-                                delay: 55000,
-                                callback: ()=>{
-                                    gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
-                                    gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
-                                },  
-                                startAt: 0,
-                                timeScale: 1
-                            });
-                        }
-                        else if(gameState.wave == 51){
-                            gameState.wave = 50;
+                        if(gameState.thingsToSave.trophys.overWorld == false){
+                            if(gameState.wave == 1){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 4
+                                }); 
+                            }else if(gameState.wave == 2){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                            }else if(gameState.wave == 3){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                }); 
+                            }else if(gameState.wave == 4){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 24
+                                }); 
+                            }
+                            else if(gameState.wave == 5){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 29
+                                }); 
+                            }else if(gameState.wave == 6){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 29
+                                }); 
+                            }else if(gameState.wave == 7){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                            }else if(gameState.wave == 8){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 4
+                                }); 
+                            }
+                            else if(gameState.wave == 9){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 4
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                            }
+                            else if(gameState.wave == 10){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                }); 
+                            }else if(gameState.wave == 11){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 49
+                                }); 
+                            }else if(gameState.wave == 12){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 24
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 14
+                                });
+                            }else if(gameState.wave == 13){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 4
+                                });
+                            }else if(gameState.wave == 14){
+                                scene.time.addEvent({
+                                    delay: 2000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 2000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                });
+                            }else if(gameState.wave == 15){
+                                scene.time.addEvent({
+                                    delay: 2000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 2000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 9
+                                });
+                            }else if(gameState.wave == 16){
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                });
+                            }else if(gameState.wave == 17){
+                                scene.time.addEvent({
+                                    delay: 50,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 1000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 19
+                                });
+                            }else if(gameState.wave == 18){
+                                scene.time.addEvent({
+                                    delay: 30,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 39
+                                });
+                            }else if(gameState.wave == 19){
+                                scene.time.addEvent({
+                                    delay: 10,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 49
+                                }); 
+                                scene.time.addEvent({
+                                    delay: 50,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieBomberStats,1);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1,
+                                    repeat: 4
+                                });
+                            }else if(gameState.wave == 20){
+                                scene.time.addEvent({
+                                    delay: 10,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,100);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                }); 
+                            }else if(gameState.wave == 21){
+                                scene.time.addEvent({
+                                    delay: 10,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,50);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                }); 
+                            }
+                            else if(gameState.wave == 22){
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,30);
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
+                            }
+                            else if(gameState.wave == 23){
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
+                            }
+                            else if(gameState.wave == 24){
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,10);
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,10);
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,10);
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                            }else if(gameState.wave == 25){
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
+                            }else if(gameState.wave == 26){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,80);
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                            }else if(gameState.wave == 27){
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,30);
+                            }else if(gameState.wave == 28){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,30);
+                            }else if(gameState.wave == 29){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                            }else if(gameState.wave == 30){
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
+                            }else if(gameState.wave == 31){
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                            }else if(gameState.wave == 32){
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,150);
+                            }else if(gameState.wave == 33){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,15);
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,15);
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
+                            }else if(gameState.wave == 34){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,30);
+                            }else if(gameState.wave == 35){
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,50);
+                            }else if(gameState.wave == 36){
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,50);
+                            }else if(gameState.wave == 37){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,1);
+                            }else if(gameState.wave == 38){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,1);
+                            }else if(gameState.wave == 39){
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,1);
+                            }else if(gameState.wave == 40){
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,7);
+                            }else if(gameState.wave == 41){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,20);
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                            }else if(gameState.wave == 42){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,20);
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                            }else if(gameState.wave == 43){
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,20);
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,1);
+                            }else if(gameState.wave == 44){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,5);
+                            }else if(gameState.wave == 45){
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,250);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,250);
+                            }else if(gameState.wave == 46){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,10);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,10);
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,40);
+                            }else if(gameState.wave == 47){
+                                gameState.spawnZombies(scene,gameState.zombieGiantStats,5);
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                            }else if(gameState.wave == 48){
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,15);
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
+                                gameState.spawnZombies(scene,gameState.zombieWizardStats,2);
+                            }else if(gameState.wave == 49){
+                                gameState.spawnZombies(scene,gameState.zombieDogStats,5);
+                                gameState.spawnZombies(scene,gameState.zombieMuskateerStats,5);
+                                gameState.spawnZombies(scene,gameState.zombie1Stats,5);
+                                gameState.spawnZombies(scene,gameState.zombieBomberStats,5);
+                            }else if(gameState.wave == 50){
+                                gameState.spawnZombies(scene,gameState.zombieKingStats,1);
+                                scene.time.addEvent({
+                                    delay: 10000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieWizardStats,3);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                });
+                                scene.time.addEvent({
+                                    delay: 25000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieBomberStats,10);
+                                        gameState.spawnZombies(scene,gameState.zombieDogStats,20);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                });
+                                scene.time.addEvent({
+                                    delay: 40000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombie1Stats,100);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                });
+                                scene.time.addEvent({
+                                    delay: 55000,
+                                    callback: ()=>{
+                                        gameState.spawnZombies(scene,gameState.zombieGiantStats,20);
+                                        gameState.spawnZombies(scene,gameState.zombieMuskateerStats,20);
+                                    },  
+                                    startAt: 0,
+                                    timeScale: 1
+                                });
+                            }
+                            else if(gameState.wave == 51){
+                                gameState.wave = 50;
+                            }
                         }
                     },  
                     startAt: 0,
@@ -1136,6 +1152,7 @@ let gameState = {
                                             callback: ()=>{
                                                 trophy.b1.destroy();
                                                 scene.scene.start('MenuScene');
+                                                gameState.save();
                                                 gameState.thingsToSave.trophys.overWorld = true;
                                             },  
                                             startAt: 0,
@@ -2633,7 +2650,7 @@ let gameState = {
                         bullet.setRotation(gameState.angle); 
                         bullet.damage = building.currentLevel.damage
                         scene.physics.moveToObject(bullet,target,null,3000);
-                        bullet.body.velocity.y = -400;
+                        bullet.body.velocity.y -= 400;
                         var bulletLoop2 = scene.time.addEvent({
                             delay: 1,
                             callback: ()=>{
