@@ -838,7 +838,7 @@ let gameState = {
     zombieGiantStats:{
         name: "Zombie Giant",
         speed: 20,
-        health: 600,
+        health: 1000,
         damage: 25,
         attackRange: 30,
         attackSpeed: 3000,
