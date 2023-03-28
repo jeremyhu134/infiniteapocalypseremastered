@@ -2663,7 +2663,7 @@ let gameState = {
                     attackSpeed: 6500,
                     offsetx: 0,
                     offsety: 30,
-                    width: 30,
+                    width: 50,
                     height: 20,
                     name: 'PipeMortor I'
                 },
@@ -2676,7 +2676,7 @@ let gameState = {
                     attackSpeed: 6500,
                     offsetx: 0,
                     offsety: 30,
-                    width: 30,
+                    width: 50, 
                     height: 20,
                     name: 'PipeMortor II'
                 },
@@ -2689,7 +2689,7 @@ let gameState = {
                     attackSpeed: 6500,
                     offsetx: 0,
                     offsety: 30,
-                    width: 30,
+                    width: 50,
                     height: 20,
                     name: 'PipeMortor III'
                 }
