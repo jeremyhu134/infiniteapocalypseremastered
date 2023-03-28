@@ -48,6 +48,7 @@ class BuildScene extends Phaser.Scene {
             tower.id = i;
             tower.on('pointerdown', function(pointer){
                 if(gameState.blueprint.active == false){
+                    gameState.selected.select = null;
                     if(gameState.thingsToSave.trophys.overWorld == false){
                         gameState.blueprint.create(gameState.arena,gameState.gameTowers[tower.id],);
                     }else if(gameState.thingsToSave.trophys.hellWorld == false){
@@ -69,6 +70,11 @@ class BuildScene extends Phaser.Scene {
             }
         }
         gameState.selected.checkLoop(this);
+        var arrowB = this.add.image(1200,675-120,'arrowB').setOrigin(0,0).setInteractive();
+        arrowB.angle = 180;
+        arrowB.on('pointerdown', function(pointer){
+            gameState.arena.scene.bringToTop();
+        });
 	}
     update(){
         

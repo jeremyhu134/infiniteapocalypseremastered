@@ -60,7 +60,11 @@ class ArenaScene extends Phaser.Scene {
             timeScale: 1,
             repeat: -1
         }); 
-        //gameState.spawnZombies(this,gameState.demonZombie1Stats,30)
+        var arrowB = this.add.image(1170,675-30,'arrowB').setOrigin(0,0).setInteractive();
+        arrowB.on('pointerdown', function(pointer){
+            gameState.buildScene.scene.bringToTop();
+        });
+        //gameState.spawnZombies(this,gameState.zombieKingStats,1)
     }
     update(){
         gameState.blueprint.checkControls(this);

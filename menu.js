@@ -34,6 +34,7 @@ class MenuScene extends Phaser.Scene {
         
         this.load.spritesheet('ballistaTower','images/ballistaTower.png',{frameWidth: 50,frameHeight:40});
         this.load.spritesheet('healingTower','images/healingTower.png',{frameWidth: 50,frameHeight:50});
+        this.load.spritesheet('angelEyeTower','images/angelEyeTower.png',{frameWidth: 50,frameHeight:70});
         
         this.load.spritesheet('demonZombie1','images/demonZombie1.png',{frameWidth: 32,frameHeight:32});
         
@@ -53,9 +54,11 @@ class MenuScene extends Phaser.Scene {
         this.load.image('confirmButton','images/confirmButton.png');
         this.load.image('cancelButton','images/cancelButton.png');
         this.load.image('startButton','images/startButton.png');
+        this.load.image('arrowB','images/arrowB.png');
         this.load.image('BLANK','images/BLANK.png');
         this.load.image('upgradeTowerIcon','images/upgradeTowerIcon.png');
         this.load.image('laser1','images/laser1.png');
+        this.load.image('laser2','images/laser2.png');
         this.load.image('flame1','images/flame1.png');
         this.load.image('spear','images/spear.png');
         
@@ -153,6 +156,37 @@ class MenuScene extends Phaser.Scene {
             key: 'ballistaTower3Action',
             frameRate: 3,
             frames:this.anims.generateFrameNames('ballistaTower',{start: 5,end: 6})
+        });
+        
+        this.anims.create({
+            key: 'angelEyeTower1Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 1,end: 1})
+        });
+        this.anims.create({
+            key: 'angelEyeTower1Action',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 2,end: 2})
+        });
+        this.anims.create({
+            key: 'angelEyeTower2Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 3,end: 3})
+        });
+        this.anims.create({
+            key: 'angelEyeTower2Action',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 4,end: 4})
+        });
+        this.anims.create({
+            key: 'angelEyeTower3Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 5,end: 5})
+        });
+        this.anims.create({
+            key: 'angelEyeTower3Action',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('angelEyeTower',{start: 6,end: 6})
         });
         
         

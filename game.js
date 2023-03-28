@@ -35,7 +35,7 @@ let gameState = {
     
     thingsToSave:{
         trophys:{
-            overWorld: false,
+            overWorld:false,
             hellWorld:false,
             spaceWorld:false,
             aquaWorld:false
@@ -717,11 +717,10 @@ let gameState = {
                             }
                         }
                         else if(gameState.thingsToSave.trophys.hellWorld == false){
-                            if(gameState.wave == 1){
+                            /*if(gameState.wave == 1){
                                 gameState.spawnZombies(scene, gameState.demonZombie1Stats,5);
-                            }else{
-                                gameState.spawnZombies(scene, gameState.demonZombie1Stats,10);
-                            }
+                            }*/
+                            gameState.spawnZombies(scene, gameState.demonZombie1Stats,5*gameState.wave);
                         }
                     },  
                     startAt: 0,
@@ -838,7 +837,7 @@ let gameState = {
     zombieGiantStats:{
         name: "Zombie Giant",
         speed: 15,
-        health: 500,
+        health: 600,
         damage: 25,
         attackRange: 30,
         attackSpeed: 3000,
@@ -846,7 +845,7 @@ let gameState = {
             var zombie = gameState.zombies.create(x,y,`zombieGiant`).setDepth(1);
             zombie.anims.play(`zombieGiantSpawn`);
             zombie.health = gameState.zombieGiantStats.health;
-            gameState.createHealthBar(scene,zombie,gameState.zombie1Stats.health);
+            gameState.createHealthBar(scene,zombie,gameState.zombieGiantStats.health);
             scene.time.addEvent({
                 delay: 1310,
                 callback: ()=>{
@@ -1038,7 +1037,7 @@ let gameState = {
     zombieKingStats:{
         name: "Zombie King",
         speed: 5,
-        health: 10,
+        health: 10000,
         damage: 500,
         attackRange: 30,
         attackSpeed: 3000,
@@ -1917,38 +1916,38 @@ let gameState = {
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 10,
                     width: 50,
-                    height: 50,
+                    height: 40,
                     production: 5,
                     name: 'Factory I'
                 },
                 lvl2:{
                     lvl: 2,
-                    cost: 1000,
+                    cost: 600,
                     damage: 0,
                     health: 325,
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 10,
                     width: 50,
-                    height: 50,
+                    height: 40,
                     production: 15,
                     name: 'Factory II'
                 },
                 lvl3:{
                     lvl: 3,
-                    cost: 5000,
+                    cost: 2000,
                     damage: 0,
                     health: 350,
                     attackRange: 0,
                     attackSpeed: 0,
                     offsetx: 0,
-                    offsety: 0,
+                    offsety: 10,
                     width: 50,
-                    height: 50,
-                    production: 50,
+                    height: 40,
+                    production: 150,
                     name: 'Factory III'
                 }
             },
@@ -2041,7 +2040,7 @@ let gameState = {
                 lvl2:{
                     lvl:2,
                     cost: 100,
-                    damage: 0.75,
+                    damage: 0.075,
                     health: 85,
                     attackRange: 150,
                     attackSpeed: 10,
@@ -2361,7 +2360,7 @@ let gameState = {
             levels:{
                 lvl1:{
                     lvl: 1,
-                    cost: 250,
+                    cost: 275,
                     damage: 0,
                     health: 250,
                     attackRange: 10000,
@@ -2387,7 +2386,7 @@ let gameState = {
                 },
                 lvl3:{
                     lvl: 3,
-                    cost: 350,
+                    cost: 325,
                     damage: 0,
                     health: 350,
                     attackRange: 10000,
@@ -2661,10 +2660,10 @@ let gameState = {
                     health: 150,
                     attackRange: 350,
                     attackSpeed: 6500,
-                    offsetx: 0,
-                    offsety: 30,
-                    width: 50,
-                    height: 20,
+                    offsetx: 5,
+                    offsety: 20,
+                    width: 40,
+                    height: 30,
                     name: 'PipeMortor I'
                 },
                 lvl2:{
@@ -2674,10 +2673,10 @@ let gameState = {
                     health: 160,
                     attackRange: 350,
                     attackSpeed: 6500,
-                    offsetx: 0,
-                    offsety: 30,
-                    width: 50, 
-                    height: 20,
+                    offsetx: 5,
+                    offsety: 20,
+                    width: 40,
+                    height: 30,
                     name: 'PipeMortor II'
                 },
                 lvl3:{
@@ -2687,10 +2686,10 @@ let gameState = {
                     health: 170,
                     attackRange: 350,
                     attackSpeed: 6500,
-                    offsetx: 0,
-                    offsety: 30,
-                    width: 50,
-                    height: 20,
+                    offsetx: 5,
+                    offsety: 20,
+                    width: 40,
+                    height: 30,
                     name: 'PipeMortor III'
                 }
             },
@@ -3136,6 +3135,186 @@ let gameState = {
                                 else {
                                     building.attackLoop.paused = true;
                                     building.anims.play(`healingTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
+            }
+        },
+        //angelEyeTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 175,
+                    damage: 0.005,
+                    health: 100,
+                    attackRange: 175,
+                    attackSpeed: 20,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 50,
+                    height: 40,
+                    name: 'AngelEyeTower I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 225,
+                    damage: 0.008,
+                    health: 125,
+                    attackRange: 175,
+                    attackSpeed: 20,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 50,
+                    height: 40,
+                    name: 'AngelEyeTower II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 500,
+                    damage: 0.012,
+                    health: 200,
+                    attackRange: 175,
+                    attackSpeed: 20,
+                    offsetx: 0,
+                    offsety: 30,
+                    width: 50,
+                    height: 40,
+                    name: 'DemonEyeTower'
+                }
+            },
+            sprite: 'angelEyeTower',
+            attackType: 'magic',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(Math.ceil(gameState.blueprintSprite.x),Math.ceil(gameState.blueprintSprite.y),'angelEyeTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.damageFactor = 0;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                gameState.gameTowers2[2].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.zombies.getChildren().length > 0){
+                    for (var i = 0; i < gameState.zombies.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.zombies.getChildren()[i], building);
+                        if(dist<closest && !building.target){
+                            closest = dist;
+                            target = gameState.zombies.getChildren()[i];
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                if(target2 !== target){
+                    building.damageFactor = 0;
+                }else{
+                    building.damageFactor += building.currentLevel.damage;
+                }
+                var target2 = target;
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        var bullet = gameState.bullets.create(building.x,building.y-15,'laser2');
+                        gameState.angle=Phaser.Math.Angle.Between(building.x,building.y-15,target.x,target.y);
+                        bullet.setRotation(gameState.angle); 
+                        scene.physics.moveTo(bullet,target.x ,target.y ,1000);
+                        var bulletLoop = scene.time.addEvent({
+                            delay: 8000,
+                            callback: ()=>{
+                                bullet.destroy();
+                            },  
+                            startAt: 0,
+                            timeScale: 1
+                        });
+                        scene.physics.add.overlap(bullet, target,(bull, targ)=>{
+                            bulletLoop.destroy();
+                            bull.destroy();
+                            targ.health -= building.damageFactor;
+                        });
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(target2 !== target){
+                                    building.damageFactor = 0;
+                                }else{
+                                    if(dist <= building.currentLevel.attackRange){
+                                        if(building.damageFactor < 5){
+                                            building.damageFactor += building.currentLevel.damage;
+                                        }
+                                    }
+                                }
+                                target2 = target;
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.attackLoop.paused = false;
+                                    building.anims.play(`angelEyeTower${building.currentLevel.lvl}Action`,true);
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`angelEyeTower${building.currentLevel.lvl}Idle`,true);
                                 }
                             }
                         }
