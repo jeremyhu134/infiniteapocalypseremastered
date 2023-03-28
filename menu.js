@@ -33,6 +33,7 @@ class MenuScene extends Phaser.Scene {
         
         
         this.load.spritesheet('ballistaTower','images/ballistaTower.png',{frameWidth: 50,frameHeight:40});
+        this.load.spritesheet('healingTower','images/healingTower.png',{frameWidth: 50,frameHeight:50});
         
         this.load.spritesheet('demonZombie1','images/demonZombie1.png',{frameWidth: 32,frameHeight:32});
         
@@ -56,6 +57,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image('upgradeTowerIcon','images/upgradeTowerIcon.png');
         this.load.image('laser1','images/laser1.png');
         this.load.image('flame1','images/flame1.png');
+        this.load.image('spear','images/spear.png');
         
         
         this.load.spritesheet('machineGunTower','images/machineGunTower.png',{frameWidth: 80,frameHeight:80});
@@ -152,6 +154,42 @@ class MenuScene extends Phaser.Scene {
             frameRate: 3,
             frames:this.anims.generateFrameNames('ballistaTower',{start: 5,end: 6})
         });
+        
+        
+        
+        
+        
+        this.anims.create({
+            key: 'healingTower1Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('healingTower',{start: 1,end: 6})
+        });
+        this.anims.create({
+            key: 'healingTower1Action',
+            frameRate: 5,
+            frames:this.anims.generateFrameNames('healingTower',{start: 7,end: 7})
+        });
+        this.anims.create({
+            key: 'healingTower2Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('healingTower',{start: 1,end: 6})
+        });
+        this.anims.create({
+            key: 'healingTower2Action',
+            frameRate: 5,
+            frames:this.anims.generateFrameNames('healingTower',{start: 7,end: 7})
+        });
+        this.anims.create({
+            key: 'healingTower3Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('healingTower',{start: 1,end: 6})
+        });
+        this.anims.create({
+            key: 'healingTower3Action',
+            frameRate: 5,
+            frames:this.anims.generateFrameNames('healingTower',{start: 7,end: 7})
+        });
+        
         
         
         

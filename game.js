@@ -35,7 +35,7 @@ let gameState = {
     
     thingsToSave:{
         trophys:{
-            overWorld:false,
+            overWorld: true,
             hellWorld:false,
             spaceWorld:false,
             aquaWorld:false
@@ -2838,10 +2838,10 @@ let gameState = {
                 lvl1:{
                     lvl:1,
                     cost: 75,
-                    damage: 20,
+                    damage: 35,
                     health: 60,
                     attackRange: 175,
-                    attackSpeed: 1800,
+                    attackSpeed: 2000,
                     offsetx: 0,
                     offsety: 10,
                     width: 50,
@@ -2850,11 +2850,11 @@ let gameState = {
                 },
                 lvl2:{
                     lvl:2,
-                    cost: 125,
-                    damage: 22,
+                    cost: 150,
+                    damage: 40,
                     health: 100,
                     attackRange: 175,
-                    attackSpeed: 1600,
+                    attackSpeed: 1950,
                     offsetx: 0,
                     offsety: 10,
                     width: 50,
@@ -2863,11 +2863,11 @@ let gameState = {
                 },
                 lvl3:{
                     lvl:3,
-                    cost: 175,
-                    damage: 25,
-                    health: 140,
+                    cost: 225,
+                    damage: 45,
+                    health: 150,
                     attackRange: 175,
-                    attackSpeed: 1400,
+                    attackSpeed: 1900,
                     offsetx: 0,
                     offsety: 10,
                     width: 50,
@@ -2937,7 +2937,7 @@ let gameState = {
                 building.attackLoop = scene.time.addEvent({
                     delay: building.currentLevel.attackSpeed,
                     callback: ()=>{
-                        var bullet = gameState.bullets.create(building.x,building.y,'bullet');
+                        var bullet = gameState.bullets.create(building.x,building.y,'spear');
                         gameState.angle=Phaser.Math.Angle.Between(building.x,building.y,target.x,target.y);
                         bullet.setRotation(gameState.angle); 
                         scene.physics.moveTo(bullet,target.x +(Math.random()*6-10),target.y +(Math.random()*6-10),300);
@@ -2979,6 +2979,163 @@ let gameState = {
                                 else {
                                     building.attackLoop.paused = true;
                                     building.anims.play(`ballistaTower${building.currentLevel.lvl}Idle`,true);
+                                }
+                            }
+                        }
+                        else {
+                            gameState.createExplosion(scene,building.x,building.y);
+                            bLoop.destroy();
+                            building.attackLoop.destroy();
+                            building.destroy(); 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                });  
+            }
+        },
+        //healingTowerStats
+        {
+            levels:{
+                lvl1:{
+                    lvl:1,
+                    cost: 50,
+                    damage: 1,
+                    health: 50,
+                    attackRange: 150,
+                    attackSpeed: 1000,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'Healing Tower I'
+                },
+                lvl2:{
+                    lvl:2,
+                    cost: 70,
+                    damage: 2,
+                    health: 60,
+                    attackRange: 150,
+                    attackSpeed: 1000,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'Healing Tower II'
+                },
+                lvl3:{
+                    lvl:3,
+                    cost: 100,
+                    damage: 3,
+                    health: 70,
+                    attackRange: 150,
+                    attackSpeed: 1000,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 50,
+                    height: 30,
+                    name: 'HealingTower III'
+                }
+            },
+            sprite: 'healingTower',
+            attackType: 'heal',
+            buildingType: 'tower',
+
+
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(Math.ceil(gameState.blueprintSprite.x),Math.ceil(gameState.blueprintSprite.y),'healingTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.createHealthBar(scene,tower,towerStats.levels.lvl1.health);
+                towerStats.action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                    tower.attackLoop.delay = tower.currentLevel.attackSpeed;
+                } 
+            },
+            findTarget: function(scene,building){
+                var dist;
+                var closest = 10000;
+                var target = gameState.invisibleTarget;
+                if(gameState.buildings.getChildren().length > 0){
+                    for (var i = 0; i < gameState.buildings.getChildren().length; i++){ 
+                        dist = Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], building);
+                        if(gameState.buildings.getChildren()[i].buildingType !== "troop"){
+                            if(dist<closest && gameState.buildings.getChildren()[i] !== building && gameState.buildings.getChildren()[i].health < gameState.buildings.getChildren()[i].currentLevel.health){
+                                closest = dist;
+
+                                    target = gameState.buildings.getChildren()[i];
+
+                            }
+                        }
+                    }
+                }
+                return target;
+            },
+            action: function(scene,building){
+                var target = building.towerStats.findTarget(scene,building);
+                var dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                building.attackLoop = scene.time.addEvent({
+                    delay: building.currentLevel.attackSpeed,
+                    callback: ()=>{
+                        if(gameState.buildings.getChildren().length > 0){
+                            for (var i = 0; i < gameState.buildings.getChildren().length; i++){
+                                if(Phaser.Math.Distance.BetweenPoints(gameState.buildings.getChildren()[i], building) < building.currentLevel.attackRange && building !== gameState.buildings.getChildren()[i] && gameState.buildings.getChildren()[i].health < gameState.buildings.getChildren()[i].currentLevel.health){
+                                    gameState.buildings.getChildren()[i].health += building.currentLevel.damage;
+                                }
+                            } 
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                building.attackLoop.paused = true;
+                var bLoop = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health > 0){
+                            if(building.active == true){
+                                target = building.towerStats.findTarget(scene,building);
+                                dist = Phaser.Math.Distance.BetweenPoints(target, building);
+                                if(dist <= building.currentLevel.attackRange){
+                                    if(target.x < building.x){
+                                        building.flipX = true;
+                                    }else {
+                                        building.flipX = false;
+                                    }
+                                    building.anims.play(`healingTower${building.currentLevel.lvl}Action`,true);
+                                    building.attackLoop.paused = false;
+                                }
+                                else {
+                                    building.attackLoop.paused = true;
+                                    building.anims.play(`healingTower${building.currentLevel.lvl}Idle`,true);
                                 }
                             }
                         }
