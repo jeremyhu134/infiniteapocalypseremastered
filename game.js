@@ -35,7 +35,7 @@ let gameState = {
     
     thingsToSave:{
         trophys:{
-            overWorld: true,
+            overWorld: false,
             hellWorld:false,
             spaceWorld:false,
             aquaWorld:false
