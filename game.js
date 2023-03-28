@@ -837,15 +837,15 @@ let gameState = {
     
     zombieGiantStats:{
         name: "Zombie Giant",
-        speed: 20,
-        health: 1000,
+        speed: 15,
+        health: 500,
         damage: 25,
         attackRange: 30,
         attackSpeed: 3000,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieGiant`).setDepth(1);
             zombie.anims.play(`zombieGiantSpawn`);
-            zombie.health = gameState.zombie1Stats.health;
+            zombie.health = gameState.zombieGiantStats.health;
             gameState.createHealthBar(scene,zombie,gameState.zombie1Stats.health);
             scene.time.addEvent({
                 delay: 1310,
