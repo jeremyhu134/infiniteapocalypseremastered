@@ -2028,7 +2028,7 @@ let gameState = {
                 lvl1:{
                     lvl:1,
                     cost: 100,
-                    damage: 0.1,
+                    damage: 0.05,
                     health: 80,
                     attackRange: 150,
                     attackSpeed: 10,
@@ -2041,7 +2041,7 @@ let gameState = {
                 lvl2:{
                     lvl:2,
                     cost: 100,
-                    damage: 0.15,
+                    damage: 0.75,
                     health: 85,
                     attackRange: 150,
                     attackSpeed: 10,
@@ -2054,10 +2054,10 @@ let gameState = {
                 lvl3:{
                     lvl:3,
                     cost: 100,
-                    damage: 0.2,
+                    damage: 0.1,
                     health: 90,
                     attackRange: 150,
-                    attackSpeed: 125,
+                    attackSpeed: 10,
                     offsetx: 0,
                     offsety: 20,
                     width: 50,
