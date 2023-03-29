@@ -28,7 +28,7 @@ class ArenaScene extends Phaser.Scene {
         gameState.createBackground(this);
         gameState.globalScene = this;
         gameState.arena = this;
-        
+        gameState.money = 250;
         gameState.loadSave();
         /*this.physics.add.collider(gameState.player, gameState.barriers,(hero,barrier)=>{
             
