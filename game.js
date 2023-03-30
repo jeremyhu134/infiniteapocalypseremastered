@@ -278,10 +278,10 @@ let gameState = {
                 callback: ()=>{
                     var random = Math.ceil(Math.random()*2);
                     if(random == 1){
-                        stats.spawnZombie(scene,Math.random()*50+50,Math.random()*window.innerHeight);
+                        stats.spawnZombie(scene,Math.random()*25+25,Math.random()*675);
                     }
                     else {
-                        stats.spawnZombie(scene,window.innerWidth-(Math.random()*50+50),Math.random()*window.innerHeight);
+                        stats.spawnZombie(scene,1200-(Math.random()*25+25),Math.random()*675);
                     }
                 },  
                 startAt: 0,
@@ -1036,11 +1036,11 @@ let gameState = {
     
     zombieKingStats:{
         name: "Zombie King",
-        speed: 5,
-        health: 10000,
+        speed: 10,
+        health: 20000,
         damage: 500,
-        attackRange: 30,
-        attackSpeed: 3000,
+        attackRange: 50,
+        attackSpeed: 1000,
         spawnZombie: function(scene,x,y){
             var zombie = gameState.zombies.create(x,y,`zombieKing`).setDepth(0);
             zombie.setDepth(zombie.y);
@@ -2836,9 +2836,9 @@ let gameState = {
             levels:{
                 lvl1:{
                     lvl:1,
-                    cost: 65,
+                    cost: 75,
                     damage: 35,
-                    health: 80,
+                    health: 60,
                     attackRange: 175,
                     attackSpeed: 2000,
                     offsetx: 0,
@@ -2849,9 +2849,9 @@ let gameState = {
                 },
                 lvl2:{
                     lvl:2,
-                    cost: 140,
+                    cost: 150,
                     damage: 40,
-                    health: 120,
+                    health: 100,
                     attackRange: 175,
                     attackSpeed: 1950,
                     offsetx: 0,
@@ -2864,7 +2864,7 @@ let gameState = {
                     lvl:3,
                     cost: 225,
                     damage: 45,
-                    health: 180,
+                    health: 150,
                     attackRange: 175,
                     attackSpeed: 1900,
                     offsetx: 0,
@@ -3156,8 +3156,8 @@ let gameState = {
             levels:{
                 lvl1:{
                     lvl:1,
-                    cost: 175,
-                    damage: 0.008,
+                    cost: 150,
+                    damage: 0.005,
                     health: 100,
                     attackRange: 175,
                     attackSpeed: 20,
@@ -3169,8 +3169,8 @@ let gameState = {
                 },
                 lvl2:{
                     lvl:2,
-                    cost: 225,
-                    damage: 0.012,
+                    cost: 200,
+                    damage: 0.008,
                     health: 125,
                     attackRange: 175,
                     attackSpeed: 20,
@@ -3183,7 +3183,7 @@ let gameState = {
                 lvl3:{
                     lvl:3,
                     cost: 500,
-                    damage: 0.03,
+                    damage: 0.015,
                     health: 200,
                     attackRange: 175,
                     attackSpeed: 20,
@@ -3329,6 +3329,122 @@ let gameState = {
                     timeScale: 1,
                     repeat: -1
                 });  
+            }
+        },
+        //goldalchemistStats
+        {
+            levels:{
+                lvl1:{
+                    lvl: 1,
+                    cost: 100,
+                    damage: 0,
+                    health: 175,
+                    attackRange: 0,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 80,
+                    height: 60,
+                    production: 1,
+                    name: 'GoldAlchemist I'
+                },
+                lvl2:{
+                    lvl: 2,
+                    cost: 200,
+                    damage: 0,
+                    health: 200,
+                    attackRange: 0,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 80,
+                    height: 60,
+                    production: 2,
+                    name: 'GoldAlchemist II'
+                },
+                lvl3:{
+                    lvl: 3,
+                    cost: 300,
+                    damage: 0,
+                    health: 225,
+                    attackRange: 0,
+                    attackSpeed: 0,
+                    offsetx: 0,
+                    offsety: 20,
+                    width: 80,
+                    height: 60,
+                    production: 4,
+                    name: 'GoldAlchemist III'
+                }
+            },
+            sprite: 'goldAlchemist',
+            attackType: 'none',
+            buildingType: 'producer',
+            spawnTower: function(scene,towerStats){
+                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'goldAlchemist').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                tower.setFrame(1);
+                tower.health = towerStats.levels.lvl1.health;
+                tower.active = true;
+                tower.towerStats = towerStats;
+                tower.body.offset.x = towerStats.levels.lvl1.offsetx;
+                tower.body.offset.y = towerStats.levels.lvl1.offsety;
+                tower.body.width = towerStats.levels.lvl1.width;
+                tower.body.height = towerStats.levels.lvl1.height;
+                tower.currentLevel = towerStats.levels.lvl1;
+                gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                tower.on('pointerdown', function(pointer){
+                    if(gameState.blueprint.active == false){
+                        gameState.selected.setInfo(scene,tower);
+                    }
+                });
+                gameState.gameTowers2[3].action(scene,tower);
+            },
+            upgradeTower: function(scene,tower){
+               if(tower.currentLevel.lvl == 1 && gameState.money >= tower.towerStats.levels.lvl2.cost){
+                   gameState.money -= tower.towerStats.levels.lvl2.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl2.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl2;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                }else if(tower.currentLevel.lvl == 2 && gameState.money >= tower.towerStats.levels.lvl3.cost){
+                    gameState.money -= tower.towerStats.levels.lvl3.cost;
+                    tower.destroyHB();
+                    tower.health = tower.towerStats.levels.lvl3.health;
+                    tower.currentLevel = tower.towerStats.levels.lvl3;
+                    gameState.createHealthBar(scene,tower,tower.currentLevel.health);
+                } 
+            },
+            
+            action: function(scene,building){
+                var loop = scene.time.addEvent({
+                    delay: 2000,
+                    callback: ()=>{
+                        if(building.health >0){
+                            gameState.money += building.currentLevel.production;
+                            gameState.updateMoney();
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
+                var loop1 = scene.time.addEvent({
+                    delay: 1,
+                    callback: ()=>{
+                        if(building.health <= 0){
+                            gameState.createExplosion(scene,building.x,building.y);
+                            building.destroy();
+                            loop.destroy();
+                            loop1.destroy();
+                            building.destroyHB();
+                        }else{
+                            building.anims.play(`goldAlchemist${building.currentLevel.lvl}Action`,true);
+                        }
+                    },  
+                    startAt: 0,
+                    timeScale: 1,
+                    repeat: -1
+                }); 
             }
         },
     ],

@@ -29,7 +29,8 @@ class ArenaScene extends Phaser.Scene {
         gameState.globalScene = this;
         gameState.arena = this;
         gameState.money = 250;
-        gameState.loadSave();
+        gameState.wave = 0;
+        
         /*this.physics.add.collider(gameState.player, gameState.barriers,(hero,barrier)=>{
             
         });*/
@@ -50,7 +51,7 @@ class ArenaScene extends Phaser.Scene {
         gameState.townhallStats.spawnTower(this,gameState.townhallStats,600,333);
         this.scene.launch('BuildScene');
         //this.physics.add.overlap(gameState.blueprint, gameState.buildings)
-       
+        gameState.loadSave();
         this.time.addEvent({
             delay: 1000,
             callback: ()=>{

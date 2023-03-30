@@ -35,6 +35,7 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('ballistaTower','images/ballistaTower.png',{frameWidth: 50,frameHeight:40});
         this.load.spritesheet('healingTower','images/healingTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('angelEyeTower','images/angelEyeTower.png',{frameWidth: 50,frameHeight:70});
+        this.load.spritesheet('goldAlchemist','images/goldAlchemist.png',{frameWidth: 80,frameHeight:80});
         
         this.load.spritesheet('demonZombie1','images/demonZombie1.png',{frameWidth: 32,frameHeight:32});
         
@@ -222,6 +223,26 @@ class MenuScene extends Phaser.Scene {
             key: 'healingTower3Action',
             frameRate: 5,
             frames:this.anims.generateFrameNames('healingTower',{start: 7,end: 7})
+        });
+        
+        
+        this.anims.create({
+            key: 'factory1Action',
+            frameRate: 7,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('factory',{start: 1,end: 4})
+        });
+        this.anims.create({
+            key: 'factory2Action',
+            frameRate: 7,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('factory',{start: 5,end: 8})
+        });
+        this.anims.create({
+            key: 'factory3Action',
+            frameRate: 7,
+            repeat: -1,
+            frames:this.anims.generateFrameNames('factory',{start: 9,end: 12})
         });
         
         
@@ -685,22 +706,22 @@ class MenuScene extends Phaser.Scene {
         
         
         this.anims.create({
-            key: 'factory1Action',
-            frameRate: 7,
+            key: 'goldAlchemist1Action',
+            frameRate: 12,
             repeat: -1,
-            frames:this.anims.generateFrameNames('factory',{start: 1,end: 4})
+            frames:this.anims.generateFrameNames('goldAlchemist',{start: 1,end: 2})
         });
         this.anims.create({
-            key: 'factory2Action',
-            frameRate: 7,
+            key: 'goldAlchemist2Action',
+            frameRate: 12,
             repeat: -1,
-            frames:this.anims.generateFrameNames('factory',{start: 5,end: 8})
+            frames:this.anims.generateFrameNames('goldAlchemist',{start: 3,end: 4})
         });
         this.anims.create({
-            key: 'factory3Action',
-            frameRate: 7,
+            key: 'goldAlchemist3Action',
+            frameRate: 12,
             repeat: -1,
-            frames:this.anims.generateFrameNames('factory',{start: 9,end: 12})
+            frames:this.anims.generateFrameNames('goldAlchemist',{start: 5,end: 6})
         });
         
         
