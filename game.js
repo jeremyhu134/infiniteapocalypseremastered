@@ -720,7 +720,7 @@ let gameState = {
                             /*if(gameState.wave == 1){
                                 gameState.spawnZombies(scene, gameState.demonZombie1Stats,5);
                             }*/
-                            gameState.spawnZombies(scene, gameState.demonZombie1Stats,5*gameState.wave);
+                            gameState.spawnZombies(scene, gameState.demonZombie1Stats,3*gameState.wave);
                         }
                     },  
                     startAt: 0,
