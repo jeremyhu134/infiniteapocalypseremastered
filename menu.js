@@ -36,6 +36,7 @@ class MenuScene extends Phaser.Scene {
         this.load.spritesheet('healingTower','images/healingTower.png',{frameWidth: 50,frameHeight:50});
         this.load.spritesheet('angelEyeTower','images/angelEyeTower.png',{frameWidth: 50,frameHeight:70});
         this.load.spritesheet('goldAlchemist','images/goldAlchemist.png',{frameWidth: 80,frameHeight:80});
+        this.load.spritesheet('NecroTower','images/NecroTower.png',{frameWidth: 50,frameHeight:70});
         
         this.load.spritesheet('demonZombie1','images/demonZombie1.png',{frameWidth: 32,frameHeight:32});
         
@@ -54,6 +55,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image('buildMenuBg','images/buildMenuBg.png');
         this.load.image('confirmButton','images/confirmButton.png');
         this.load.image('cancelButton','images/cancelButton.png');
+        this.load.image('sellButton','images/sellButton.png');
         this.load.image('startButton','images/startButton.png');
         this.load.image('arrowB','images/arrowB.png');
         this.load.image('BLANK','images/BLANK.png');
@@ -61,6 +63,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image('laser1','images/laser1.png');
         this.load.image('laser2','images/laser2.png');
         this.load.image('flame1','images/flame1.png');
+        this.load.image('fireball1','images/fireball1.png');
         this.load.image('spear','images/spear.png');
         
         
@@ -190,9 +193,36 @@ class MenuScene extends Phaser.Scene {
             frames:this.anims.generateFrameNames('angelEyeTower',{start: 6,end: 6})
         });
         
-        
-        
-        
+        this.anims.create({
+            key: 'NecroTower1Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 1,end: 1})
+        });
+        this.anims.create({
+            key: 'NecroTower1Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 2,end: 8})
+        });
+        this.anims.create({
+            key: 'NecroTower2Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 9,end: 9})
+        });
+        this.anims.create({
+            key: 'NecroTower2Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 10,end: 16})
+        });
+        this.anims.create({
+            key: 'NecroTower3Idle',
+            frameRate: 1,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 17,end: 17})
+        });
+        this.anims.create({
+            key: 'NecroTower3Action',
+            frameRate: 10,
+            frames:this.anims.generateFrameNames('NecroTower',{start: 18,end: 24})
+        });
         
         this.anims.create({
             key: 'healingTower1Idle',
