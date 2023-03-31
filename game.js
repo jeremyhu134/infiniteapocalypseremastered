@@ -35,7 +35,7 @@ let gameState = {
     
     thingsToSave:{
         trophys:{
-            overWorld:true,
+            overWorld:false,
             hellWorld:false,
             spaceWorld:false,
             aquaWorld:false
@@ -128,6 +128,8 @@ let gameState = {
             confirmButton.on('pointerdown', function(pointer){
                 if(gameState.money >= towerStats.levels.lvl1.cost && gameState.blueprint.overLap >5){
                     gameState.money -= towerStats.levels.lvl1.cost;
+                    gameState.blueprintSprite.x = Math.ceil(gameState.blueprintSprite.x);
+                    gameState.blueprintSprite.y = Math.ceil(gameState.blueprintSprite.y);
                     towerStats.spawnTower                                                               (gameState.globalScene,towerStats);
                     gameState.updateMoney();
                     confirmButton.destroy();
@@ -3508,7 +3510,7 @@ let gameState = {
 
 
             spawnTower: function(scene,towerStats){
-                var tower = gameState.buildings.create(gameState.blueprintSprite.x,gameState.blueprintSprite.y,'NecroTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
+                var tower = gameState.buildings.create(Math.ceil(gameState.blueprintSprite.x),Math.ceil(gameState.blueprintSprite.y),'NecroTower').setDepth(gameState.blueprintSprite.y).setImmovable().setInteractive();
                 tower.setFrame(1);
                 tower.health = towerStats.levels.lvl1.health;
                 tower.active = true;
