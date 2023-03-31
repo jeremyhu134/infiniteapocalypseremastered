@@ -833,7 +833,7 @@ class MenuScene extends Phaser.Scene {
             repeat: -1,
             frames:this.anims.generateFrameNames('flameThrowerTower',{start: 5,end: 6})
         });
-        
+        gameState.loadSave();
         gameState.createBackground(this);
         this.add.image(window.innerWidth/2,100,'title');
         this.add.image(200,window.innerHeight/2,'zombie1').setScale(10);
