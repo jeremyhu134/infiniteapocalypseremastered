@@ -3359,7 +3359,7 @@ let gameState = {
                     offsety: 20,
                     width: 80,
                     height: 60,
-                    production: 3,
+                    production: 1,
                     name: 'GoldAlchemist I'
                 },
                 lvl2:{
@@ -3373,7 +3373,7 @@ let gameState = {
                     offsety: 20,
                     width: 80,
                     height: 60,
-                    production: 5,
+                    production: 3,
                     name: 'GoldAlchemist II'
                 },
                 lvl3:{
@@ -3387,7 +3387,7 @@ let gameState = {
                     offsety: 20,
                     width: 80,
                     height: 60,
-                    production: 7,
+                    production: 5,
                     name: 'GoldAlchemist III'
                 }
             },
@@ -3480,7 +3480,7 @@ let gameState = {
                 lvl2:{
                     lvl:2,
                     cost: 225,
-                    damage: 24,
+                    damage: 20,
                     health: 175,
                     attackRange: 170,
                     attackSpeed: 1200,
@@ -3493,7 +3493,7 @@ let gameState = {
                 lvl3:{
                     lvl:3,
                     cost: 275,
-                    damage: 35,
+                    damage: 30,
                     health: 225,
                     attackRange: 170,
                     attackSpeed: 1200,
